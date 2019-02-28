@@ -1,0 +1,7 @@
+.cell {
+    border: 2px solid #282c34;
+    font-size: 20px;
+    text-align: center;
+    min-height: 100px;
+    min-width: 100px;
+}
