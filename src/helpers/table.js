@@ -1,5 +1,5 @@
 import data from "../data";
-import {isInThisWeek} from "./eventToIndexHelper";
+import {getMarginOfEvent, isInThisWeek} from "./eventToIndexHelper";
 
 export const makeEmptyTable = (dayStart, dayEnd) => {
     const cols = [];
@@ -26,8 +26,8 @@ export const makeDays = (dayStart, dayEnd) => {
 }
 
 export const makeTable = (week, dayStart, cols) => {
-
     data.events.forEach(event => {
+        getMarginOfEvent(event);
         const date = new Date(event.start);
         if (isInThisWeek(date, week)) {
             const hours = date.getHours() - dayStart
@@ -37,7 +37,6 @@ export const makeTable = (week, dayStart, cols) => {
             } else {
                 day -= 1
             }
-            console.log(hours, day);
             try {
                 cols[hours][day].events.push(event)
             } catch (e) {

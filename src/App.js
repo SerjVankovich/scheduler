@@ -13,6 +13,7 @@ class App extends Component {
     const emptyCells = makeEmptyTable(dayStart, dayEnd);
     const fullCells = makeTable(week, dayStart, emptyCells);
 
+
     return (
       <table>
         <tbody>
