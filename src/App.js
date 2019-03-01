@@ -3,15 +3,15 @@ import './App.css';
 import HeaderCell, {DayCell} from "./components/HeaderCell/HeaderCell";
 import Cell from "./components/Cell/Cell";
 import {makeWeek} from "./helpers/weekHelper";
-import {makeDays, makeEmptyTable, makeTable} from "./helpers/table";
+import {makeDays} from "./helpers/table";
+import {DragDropContext} from "react-dnd";
+import HTML5BACKEND from 'react-dnd-html5-backend'
 
 class App extends Component {
   render() {
-    const {weekStart, dayStart, dayEnd, delimiter} = this.props;
+    const {weekStart, dayStart, dayEnd, delimiter, cells} = this.props;
     const week = makeWeek(weekStart);
     const days = makeDays(dayStart, dayEnd);
-    const emptyCells = makeEmptyTable(dayStart, dayEnd);
-    const fullCells = makeTable(week, dayStart, emptyCells);
 
 
     return (
@@ -31,9 +31,9 @@ class App extends Component {
               <td>
                 <DayCell date={day}/>
               </td>
-              {fullCells[index].map((cell, i) => (
+              {cells[index].map((cell, i) => (
                   <td key={i}>
-                    <Cell events={cell.events} address={cell.address}/>
+                    <Cell dayStart={dayStart} deleteEvent={this.props.deleteEvent} replaceEvent={this.props.replaceEvent} events={cell.events} address={cell.address}/>
                   </td>
               ))}
 
@@ -46,4 +46,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default DragDropContext(HTML5BACKEND)(App);

@@ -28,10 +28,11 @@ export const getMonth = (num) => {
 }
 
 export const makeWeek = (weekStart) => {
+    const _weekStart = new Date(weekStart.valueOf());
     const weekStartToArray = new Date(weekStart.valueOf());
     const week = [weekStartToArray];
     for (let i = 0; i < 6; i++) {
-        let weekDay = new Date(weekStart.setDate(weekStart.getDate() + 1))
+        let weekDay = new Date(_weekStart.setDate(_weekStart.getDate() + 1))
         week.push(weekDay)
     }
 

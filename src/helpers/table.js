@@ -46,4 +46,4 @@ export const makeTable = (week, dayStart, cols) => {
     });
 
     return cols
-}
+};
