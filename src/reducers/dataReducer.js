@@ -17,11 +17,11 @@ export default function events(state={}, action) {
                     const duration = eventEnd.getHours() - eventDate.getHours();
 
                     const differenceWeekDay = day - eventDate.getDay();
-                    const differenceHour = hours + action.dayStart - eventDate.getHours();
+                    const differenceHour = hours + action.dayStart;
                     eventDate.setDate(eventDate.getDate() + differenceWeekDay);
-                    eventDate.setHours(eventDate.getHours() + differenceHour);
+                    eventDate.setHours(differenceHour);
                     eventEnd.setDate(eventDate.getDate() + differenceWeekDay);
-                    eventEnd.setHours(eventDate.getHours() + differenceHour + duration);
+                    eventEnd.setHours(eventDate.getHours()  + duration);
                     event.start = eventDate;
                     event.end = eventEnd
                 }

@@ -1,8 +1,6 @@
 import React from 'react'
-import {CardTitle} from "reactstrap";
 import "./Event.css"
-import {getHeightOfEvent, getMarginOfEvent} from "../../helpers/eventToIndexHelper";
-import config from "../../config";
+import {getEventColor, getHeightOfEvent, getMarginOfEvent} from "../../helpers/eventToIndexHelper";
 import {DragSource} from "react-dnd";
 
 const eventSource = {
@@ -31,10 +29,9 @@ const collect = (connect, monitor) => ({
 const Event = ({ address, event, isDragging, connectDragSource }) => connectDragSource(
     <div className="event" style=
         {{
+            background: getEventColor(),
             marginTop: parseInt(getMarginOfEvent(event)),
-            width: config.cellSize - 4,
             height: parseInt(getHeightOfEvent(event)) - 2,
-            borderRadius: 10
         }}>
                 <h6>
                     {event.title} <br/>

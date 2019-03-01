@@ -14,8 +14,8 @@ const specCell = {
     }
 };
 
-const Cell = ({address, events, deleteEvent, replaceEvent, dayStart, connectDropTarget}) => connectDropTarget(
-    <div className="cell">
+const Cell = ({address, events, deleteEvent, replaceEvent, dayStart, connectDropTarget, hovered}) => connectDropTarget(
+    <div className="cell" style={{ background: hovered ? "#cbc8cb" : "white"}}>
         {events.map((event, index) => (
             <Event address={address} dayStart={dayStart} deleteEvent={deleteEvent} replaceEvent={replaceEvent} event={event} key={index}/>
         ))}

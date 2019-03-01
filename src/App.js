@@ -15,14 +15,14 @@ class App extends Component {
 
 
     return (
-      <table>
+      <table width="100%" cellPadding={0} cellSpacing={0}>
         <tbody>
         <tr>
-          <td/>
+          <th width={"8%"}/>
           {week.map((weekDay, index) => (
-              <td key={index}>
+              <th width={"12.5%"} key={index}>
                 <HeaderCell date={weekDay} />
-              </td>
+              </th>
           ))}
         </tr>
         {days.map((day, index) => (

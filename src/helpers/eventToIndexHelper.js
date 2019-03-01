@@ -4,6 +4,14 @@ export const isInThisWeek = (date, week) => {
     return date.valueOf() > week[0].valueOf() && date.valueOf() < week[week.length - 1].valueOf()
 };
 
+export const getEventColor = () => {
+    const colors = config.colors;
+
+    const index = Math.floor(Math.random() * colors.length);
+
+    return colors[index]
+};
+
 export const getMarginOfEvent = (event) => {
     const date = new Date(event.start);
     return date.getMinutes() / 60 * config.cellSize

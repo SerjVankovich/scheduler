@@ -1,22 +1,17 @@
 import React from "react"
 import './HeaderCell.css'
-import {getDay, getDayOfWeek, getMonth} from "../../helpers/weekHelper";
-import {Row, Container} from "reactstrap";
+import {getDayOfWeek} from "../../helpers/weekHelper";
 
 const HeaderCell = ({date}) => (
-        <div className="cell">
-            {getDayOfWeek(date.getDay())} {getMonth(date.getMonth())}/{getDay(date.getDate())}
+        <div className="header_cell">
+            <p style={{ marginLeft: 5, color: "#ff0000"}}>{date.getDate()}</p>
+            <p style={{ marginLeft: 5, color: "#5c5c58"}}>{getDayOfWeek(date.getDay())}</p>
         </div>
     );
 
 export const DayCell = ({date}) => (
-    <div className="cell">
-        {date}:00
-        <br/>
-        <div style={{ top: 50 + "%"}}>
-            {date}:30
-        </div>
-
+    <div className="day_cell">
+        <p className="time_indicator">{date}:00</p>
     </div>
 
 );
