@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Event.css"
-import {getEventColor, getHeightOfEvent, getMarginOfEvent} from "../../helpers/eventToIndexHelper";
+import {getEventColor, getHeightOfEvent} from "../../helpers/eventToIndexHelper";
 import {DragSource} from "react-dnd";
 
 const eventSource = {
@@ -13,9 +13,10 @@ const eventSource = {
             return
         }
         const cellId = monitor.getDropResult().address;
+        const subCell = monitor.getDropResult().subCell;
         console.log(props.deleteEvent);
-        props.deleteEvent(props.address, props.event.id);
-        return props.replaceEvent(cellId, props.event, props.dayStart)
+        props.deleteEvent(props.address, props.event.id, props.subCell);
+        return props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
 
     }
 }
@@ -30,7 +31,6 @@ const Event = ({ address, event, isDragging, connectDragSource }) => connectDrag
     <div className="event" style=
         {{
             background: getEventColor(),
-            marginTop: parseInt(getMarginOfEvent(event)),
             height: parseInt(getHeightOfEvent(event)) - 2,
         }}>
                 <h6>

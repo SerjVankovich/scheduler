@@ -9,7 +9,7 @@ import HTML5BACKEND from 'react-dnd-html5-backend'
 
 class App extends Component {
   render() {
-    const {weekStart, dayStart, dayEnd, delimiter, cells} = this.props;
+    const {weekStart, dayStart, dayEnd, cells, delimiter} = this.props;
     const week = makeWeek(weekStart);
     const days = makeDays(dayStart, dayEnd);
 
@@ -31,9 +31,10 @@ class App extends Component {
               <td>
                 <DayCell date={day}/>
               </td>
+
               {cells[index].map((cell, i) => (
                   <td key={i}>
-                    <Cell dayStart={dayStart} deleteEvent={this.props.deleteEvent} replaceEvent={this.props.replaceEvent} events={cell.events} address={cell.address}/>
+                    <Cell delimiter={delimiter} miniCells={cell.subCells} dayStart={dayStart} deleteEvent={this.props.deleteEvent} replaceEvent={this.props.replaceEvent} address={cell.address}/>
                   </td>
               ))}
 

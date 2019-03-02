@@ -1,9 +1,10 @@
 .cell {
     border: 0 solid #282c34;
-    border-bottom-width: 1px;
+    border-bottom-width: 2px;
     font-size: 20px;
     text-align: left;
     min-height: 100px;
+    height: 100px;
     min-width: 100px;
     margin: 0;
 }
@@ -23,7 +24,7 @@
     position: absolute;
     margin-right: 0;
     margin-left: 5%;
-    margin-top: -10px;
+    margin-top: -0.9%;
 }
 
 .day_cell {
@@ -33,4 +34,9 @@
     min-height: 100px;
     min-width: 100px;
     margin: 0;
+}
+.subCell {
+    width: 100%;
+    border: 0 dashed #282c34;
+    border-bottom-width: 1px;
 }

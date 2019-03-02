@@ -13,17 +13,18 @@ import {Provider} from "react-redux";
 const weekStart = new Date(2018, 3, 30);
 
 const week = makeWeek(weekStart);
-const emptyCells = makeEmptyTable(config.dayStart, config.dayEnd);
-const fullCells = makeTable(week, config.dayStart, emptyCells);
+const emptyCells = makeEmptyTable(config.dayStart, config.dayEnd, 60 / config.delimiter);
+const fullCells = makeTable(week, config.dayStart, emptyCells, config.delimiter);
 const store = storeFactory({
     data,
     cells: fullCells,
     dayStart: config.dayStart,
     dayEnd: config.dayEnd,
-    weekStart
+    weekStart,
+    delimiter: config.delimiter
 });
 
-console.log(store.getState())
+console.log(store.getState());
 
 ReactDOM.render(
     <Provider store={store}>

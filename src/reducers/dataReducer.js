@@ -15,13 +15,16 @@ export default function events(state={}, action) {
                     const eventDate = new Date(event.start);
                     const eventEnd = new Date(event.end);
                     const duration = eventEnd.getHours() - eventDate.getHours();
+                    const durationMinutes = eventEnd.getMinutes() - eventDate.getMinutes();
 
                     const differenceWeekDay = day - eventDate.getDay();
                     const differenceHour = hours + action.dayStart;
                     eventDate.setDate(eventDate.getDate() + differenceWeekDay);
                     eventDate.setHours(differenceHour);
+                    eventDate.setMinutes(action.delimiter * action.subCell);
                     eventEnd.setDate(eventDate.getDate() + differenceWeekDay);
                     eventEnd.setHours(eventDate.getHours()  + duration);
+                    eventEnd.setMinutes(eventDate.getMinutes() + durationMinutes )
                     event.start = eventDate;
                     event.end = eventEnd
                 }

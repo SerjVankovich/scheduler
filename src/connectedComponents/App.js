@@ -7,12 +7,13 @@ const AppConnected = connect(
         weekStart: state.weekStart,
         dayStart: state.dayStart,
         dayEnd: state.dayEnd,
-        cells: state.cells
+        cells: state.cells,
+        delimiter: state.delimiter
     }),
 
     dispatch => ({
-        deleteEvent(cellId, eventId) { return dispatch(deleteEvent(cellId, eventId))},
-        replaceEvent(cellId, event, dayStart) { return dispatch(replaceEvent(cellId, event, dayStart))}
+        deleteEvent(cellId, eventId, subCell) { return dispatch(deleteEvent(cellId, eventId, subCell))},
+        replaceEvent(cellId, event, dayStart, subCell, delimiter) { return dispatch(replaceEvent(cellId, event, dayStart, subCell, delimiter))}
     })
 )(App);
 
