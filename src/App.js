@@ -6,6 +6,7 @@ import {makeWeek} from "./helpers/weekHelper";
 import {makeDays} from "./helpers/table";
 import {DragDropContext} from "react-dnd";
 import HTML5BACKEND from 'react-dnd-html5-backend'
+import EventPreview from "./components/Event/EventPreview";
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
 
     return (
       <table width="100%" cellPadding={0} cellSpacing={0}>
+          <EventPreview/>
         <tbody>
         <tr>
           <th width={"8%"}/>
@@ -41,7 +43,6 @@ class App extends Component {
             </tr>
         ))}
         </tbody>
-
       </table>
     );
   }

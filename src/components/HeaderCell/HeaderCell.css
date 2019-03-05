@@ -21,10 +21,9 @@
 }
 
 .time_indicator {
-    position: absolute;
     margin-right: 0;
     margin-left: 5%;
-    margin-top: -0.9%;
+    margin-top: -24px;
 }
 
 .day_cell {

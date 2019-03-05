@@ -1,6 +1,7 @@
 import React from "react"
 import './HeaderCell.css'
 import {getDayOfWeek} from "../../helpers/weekHelper";
+import config from "../../config";
 
 const HeaderCell = ({date}) => (
         <div className="header_cell">
@@ -10,7 +11,7 @@ const HeaderCell = ({date}) => (
     );
 
 export const DayCell = ({date}) => (
-    <div className="day_cell">
+    <div className="day_cell" style={{ height: config.cellHeight}}>
         <p className="time_indicator">{date}:00</p>
     </div>
 

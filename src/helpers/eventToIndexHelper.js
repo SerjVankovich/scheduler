@@ -12,11 +12,6 @@ export const getEventColor = () => {
     return colors[index]
 };
 
-export const getMarginOfEvent = (event) => {
-    const date = new Date(event.start);
-    return date.getMinutes() / 60 * config.cellSize
-};
-
 export const getHeightOfEvent = (event) => {
     const dateStart = new Date(event.start);
     const dateEnd = new Date(event.end);
@@ -26,5 +21,5 @@ export const getHeightOfEvent = (event) => {
 
     const duration = durationHour + durationMinutes / 60;
 
-    return duration * config.cellSize
+    return duration * config.cellHeight
 }

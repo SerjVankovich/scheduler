@@ -12,7 +12,8 @@ const specCell = {
     drop(props, monitor, component) {
         return {address: props.address, subCell: props.num}
     }
-};
+
+}
 
 const SubCell = ({address, delimiter, num, me, dayStart, deleteEvent, replaceEvent, connectDropTarget, hovered}) => connectDropTarget(
     <div className="subCell" style={{ height: 100 / (60 / delimiter) + "%", background: hovered ? "grey" : "white" }}>
