@@ -16,7 +16,9 @@ function getItemStyles(currentOffset) {
         };
     }
 
-    const { x, y } = currentOffset;
+    //const { x, y } = currentOffset;
+    const x=0;
+    const y=0;
     const transform = `translate(${x}px, ${y}px)`;
     return {
         transform: transform,

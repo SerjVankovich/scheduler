@@ -16,8 +16,9 @@ class App extends Component {
 
 
     return (
+      <div>
+      {/* <EventPreview/> */}
       <table width="100%" cellPadding={0} cellSpacing={0}>
-          <EventPreview/>
         <tbody>
         <tr>
           <th width={"8%"}/>
@@ -44,6 +45,7 @@ class App extends Component {
         ))}
         </tbody>
       </table>
+      </div>
     );
   }
 }
