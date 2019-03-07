@@ -7,7 +7,6 @@ const eventSource = {
     beginDrag(props) {
         return props
     },
-
     /*isDragging(props, monitor) {
         const cellId = monitor.getItem().address;
         const subCell = monitor.getItem().subCell;

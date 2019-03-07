@@ -7,17 +7,18 @@ import {makeDays} from "./helpers/table";
 import {DragDropContext} from "react-dnd";
 import HTML5BACKEND from 'react-dnd-html5-backend'
 import EventPreview from "./components/Event/EventPreview";
+import {getHoveredSubCell} from "./helpers/cellsHelper";
 
 class App extends Component {
   render() {
     const {weekStart, dayStart, dayEnd, cells, delimiter} = this.props;
     const week = makeWeek(weekStart);
     const days = makeDays(dayStart, dayEnd);
-
+    const hoveredSubCell = getHoveredSubCell(cells);
 
     return (
       <table width="100%" cellPadding={0} cellSpacing={0}>
-          <EventPreview/>
+          <EventPreview hoveredSubCell={hoveredSubCell}/>
         <tbody>
         <tr>
           <th width={"8%"}/>
@@ -36,7 +37,7 @@ class App extends Component {
 
               {cells[index].map((cell, i) => (
                   <td key={i}>
-                    <Cell delimiter={delimiter} miniCells={cell.subCells} dayStart={dayStart} deleteEvent={this.props.deleteEvent} replaceEvent={this.props.replaceEvent} address={cell.address}/>
+                    <Cell lastHoveredSubCell={hoveredSubCell} setSubCellHovered={this.props.setSubCellHovered} delimiter={delimiter} miniCells={cell.subCells} dayStart={dayStart} deleteEvent={this.props.deleteEvent} replaceEvent={this.props.replaceEvent} address={cell.address}/>
                   </td>
               ))}
 

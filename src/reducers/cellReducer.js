@@ -11,6 +11,12 @@ export default function cells(state=[], action) {
         case Constants.REPLACE_EVENT:
             state[action.cellAddress[0]][action.cellAddress[1]].subCells[action.subCell].events.push(action.event);
             return [...state];
+        case Constants.SUBCELL_HOVERED:
+            if (action.lastHoveredSubCell !== null) {
+                state[action.lastHoveredSubCell.address[0]][action.lastHoveredSubCell.address[1]].subCells[action.lastHoveredSubCell.num].hovered = false
+            }
+            state[action.subCell.address[0]][action.subCell.address[1]].subCells[action.num].hovered = true;
+            return [...state];
         default: return state
     }
 }

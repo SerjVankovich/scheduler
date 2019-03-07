@@ -1,6 +1,7 @@
 import App from "../App"
 import {connect} from "react-redux";
 import {deleteEvent, replaceEvent} from "../actions/eventActions";
+import {setSubCellHovered} from "../actions/subCellsActions";
 
 const AppConnected = connect(
     state => ({
@@ -12,6 +13,7 @@ const AppConnected = connect(
     }),
 
     dispatch => ({
+        setSubCellHovered(subCell, num, lastHoveredSubCell) { return dispatch(setSubCellHovered(subCell, num, lastHoveredSubCell))},
         deleteEvent(cellId, eventId, subCell) { return dispatch(deleteEvent(cellId, eventId, subCell))},
         replaceEvent(cellId, event, dayStart, subCell, delimiter) { return dispatch(replaceEvent(cellId, event, dayStart, subCell, delimiter))}
     })
