@@ -13,7 +13,7 @@ const AppConnected = connect(
     }),
 
     dispatch => ({
-        setSubCellHovered(subCell, num, lastHoveredSubCell) { return dispatch(setSubCellHovered(subCell, num, lastHoveredSubCell))},
+        setSubCellHovered(subCell, num) { return dispatch(setSubCellHovered(subCell, num))},
         deleteEvent(cellId, eventId, subCell) { return dispatch(deleteEvent(cellId, eventId, subCell))},
         replaceEvent(cellId, event, dayStart, subCell, delimiter) { return dispatch(replaceEvent(cellId, event, dayStart, subCell, delimiter))}
     })

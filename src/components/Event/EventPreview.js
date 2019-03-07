@@ -35,22 +35,10 @@ function getItemStyles(currentOffset) {
 }
 
 class EventLayer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.lastUpdate = +new Date()
-    }
-
-    /*shouldComponentUpdate(nextProps, nextState, nextContext) {
-        if (+new Date() - this.lastUpdate > 14) {
-            this.lastUpdate = +new Date();
-            return true
-        } else {
-            return false
-        }
-    } */
-
     render() {
-        const { item, isDragging, currentOffset, hoveredSubCell} = this.props;
+        const { item, isDragging, currentOffset, lastHoveredSubCell} = this.props;
+        console.log(lastHoveredSubCell);
+        console.log(item);
         if (!isDragging) {
             return null
         }
@@ -58,7 +46,7 @@ class EventLayer extends React.Component {
             switch (type) {
                 case "event":
                     return (
-                        <EventPreview hoveredSubCell={hoveredSubCell} item={item} event={item.event}/>
+                        <EventPreview hoveredSubCell={lastHoveredSubCell} item={item} event={item.event}/>
                     );
                 default: return null
             }
@@ -86,6 +74,7 @@ const getDuration = (event) => {
 }
 
 const getStart = (subCell, item) => {
+        console.log(subCell, item)
         return {
             startHours: subCell.address[0] + item.dayStart,
             startMinutes: subCell.num * item.delimiter

@@ -7,7 +7,6 @@ const getSubCells = (numSubCells, address) => {
         subCells.push({
             address,
             events: [],
-            hovered: false
         })
     }
 
