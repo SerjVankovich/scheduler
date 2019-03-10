@@ -24,7 +24,12 @@ const SubCell = ({address, delimiter, num, me, dayStart, deleteEvent, replaceEve
 
     const twoEvents = me.events.length === 2;
     return connectDropTarget(
-        <div className="subCell" style={{ height: 100 / (60 / delimiter) + "%", background: hovered ? "grey" : "white" }}>
+        <div className="subCell" style=
+            {{
+                height: 100 / (60 / delimiter) + "%",
+                background: hovered ? "grey" : "white",
+                borderBottomWidth: ((num + 1) === 60 / delimiter) ? 0 : 1
+            }}>
             {me.events.map((event, i) => (
                 <Event numOfEvents={me.events.length} startDrag={item ? item.startDragging : false} delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent} replaceEvent={replaceEvent} address={address} event={event} subCell={num} key={i} />
             ))}
