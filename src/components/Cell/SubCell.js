@@ -1,6 +1,7 @@
 import React from 'react'
 import Event from "../Event/Event";
 import {DropTarget} from "react-dnd";
+import { EventPreview } from "../Event/EventPreview";
 
 const collect = (connect, monitor) => {
     return {
@@ -16,15 +17,22 @@ const specCell = {
     },
 };
 
-const SubCell = ({address, delimiter, num, me, dayStart, deleteEvent, replaceEvent, connectDropTarget, hovered, setSubCellHovered}) => {
+const SubCell = ({address, delimiter, num, me, dayStart, deleteEvent, replaceEvent, connectDropTarget, hovered, setSubCellHovered, item}) => {
     if (hovered) {
         setSubCellHovered(me, num)
     }
+
+    const twoEvents = me.events.length === 2;
     return connectDropTarget(
         <div className="subCell" style={{ height: 100 / (60 / delimiter) + "%", background: hovered ? "grey" : "white" }}>
             {me.events.map((event, i) => (
-                <Event delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent} replaceEvent={replaceEvent} address={address} event={event} subCell={num} key={i} />
+                <Event numOfEvents={me.events.length} startDrag={item ? item.startDragging : false} delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent} replaceEvent={replaceEvent} address={address} event={event} subCell={num} key={i} />
             ))}
+            { hovered ?
+                <EventPreview event={item.event} hoveredSubCell={me} item={item}/>
+                :
+                null
+            }
         </div>
     );
 }

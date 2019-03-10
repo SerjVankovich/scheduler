@@ -5,7 +5,7 @@ import {DragSource} from "react-dnd";
 
 const eventSource = {
     beginDrag(props) {
-        return props
+        return {...props, startDragging: true}
     },
     /*isDragging(props, monitor) {
         const cellId = monitor.getItem().address;
@@ -40,13 +40,18 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource } = this.props;
+        const { event, isDragging, connectDragSource, startDrag, numOfEvents} = this.props;
+
+        const width = startDrag ? 100 / (numOfEvents + 1) + "%" : numOfEvents > 1 ? 100 / numOfEvents + "%" : "100%";
+        console.log(startDrag);
         return connectDragSource(
             <div className="event" style=
                 {{
                     background: event.color,
                     height: parseInt(getHeightOfEvent(event)) - 2,
-                    display: isDragging ? "none" : "inline"
+                    display: isDragging ? "none" : "inline",
+                    opacity: startDrag ? 0.5 : 1,
+                    width
                 }}>
                 <h6>
                     {event.title} <br/>

@@ -37,8 +37,6 @@ function getItemStyles(currentOffset) {
 class EventLayer extends React.Component {
     render() {
         const { item, isDragging, currentOffset, lastHoveredSubCell} = this.props;
-        console.log(lastHoveredSubCell);
-        console.log(item);
         if (!isDragging) {
             return null
         }
@@ -98,20 +96,26 @@ const getEnd = (subCell, event, item) => {
 
 
 
-const EventPreview = ({ event, hoveredSubCell, item}) => (
+export const EventPreview = ({ event, hoveredSubCell, item}) => (
         <div className='event-preview' style={{
+                width: 100 / (hoveredSubCell.events.length + 1) + "%",
                 background: event.color,
                 height: parseInt(getHeightOfEvent(event)) - 2,
             }}>
             <h6>
                 {event.title} <br/>
                 {hoveredSubCell ?
-                    <div>
+                    <div style={{
+                    overflow: "auto"
+                    }}>
                         Start: {getStart(hoveredSubCell, item).startHours}:{getStart(hoveredSubCell, item).startMinutes} <br/>
                         End: {getEnd(hoveredSubCell, event, item).endHours}:{getEnd(hoveredSubCell, event, item).endMinutes}
                     </div>
                     :
-                    <div>
+                    <div style={{
+                        overflow: "auto"
+                    }
+                    }>
                         Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
                         End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
                     </div>

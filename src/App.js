@@ -16,7 +16,6 @@ class App extends Component {
 
     return (
       <table width="100%" cellPadding={0} cellSpacing={0}>
-          <EventPreview />
         <tbody>
         <tr>
           <th width={"8%"}/>
