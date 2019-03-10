@@ -13,7 +13,7 @@ class App extends Component {
     const {weekStart, dayStart, dayEnd, cells, delimiter} = this.props;
     const week = makeWeek(weekStart);
     const days = makeDays(dayStart, dayEnd);
-
+    const currentTime = (new Date);
     return (
       <table width="100%" cellPadding={0} cellSpacing={0}>
         <tbody>
@@ -29,7 +29,8 @@ class App extends Component {
 
             <tr key={index}>
               <td>
-                <DayCell date={day}/>
+                <DayCell date={day} currentTime={currentTime}/>
+                
               </td>
 
               {cells[index].map((cell, i) => (

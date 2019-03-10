@@ -53,7 +53,7 @@ class EventLayer extends React.Component {
         return (
             <div style={layerStyles}>
                 <div className='event' style={getItemStyles(currentOffset)}>
-                    {renderItem("event", item)}
+                    {/* {renderItem("event", item)} */}
                 </div>
             </div>
 
@@ -96,33 +96,44 @@ const getEnd = (subCell, event, item) => {
 
 
 
-export const EventPreview = ({ event, hoveredSubCell, item}) => (
+export const EventPreview = ({ event, hoveredSubCell, item}) => {
+        const eventHeight = parseInt(getHeightOfEvent(event)) - 2;
+        const fontBase = eventHeight< 50 ? '11' : '14';
+        return (
+        
         <div className='event-preview' style={{
                 width: 100 / (hoveredSubCell.events.length + 1) + "%",
                 background: event.color,
                 height: parseInt(getHeightOfEvent(event)) - 2,
+                fontSize: `${fontBase}px`,
             }}>
-            <h6>
+            <div>
                 {event.title} <br/>
                 {hoveredSubCell ?
                     <div style={{
-                    overflow: "auto"
+                        overflow: "auto",
+                        width:'100%',
+                        whiteSpace:'normal'
                     }}>
-                        Start: {getStart(hoveredSubCell, item).startHours}:{getStart(hoveredSubCell, item).startMinutes} <br/>
-                        End: {getEnd(hoveredSubCell, event, item).endHours}:{getEnd(hoveredSubCell, event, item).endMinutes}
+                        {getStart(hoveredSubCell, item).startHours}:{getStart(hoveredSubCell, item).startMinutes}
+                        <span> - </span>
+                        {getEnd(hoveredSubCell, event, item).endHours}:{getEnd(hoveredSubCell, event, item).endMinutes}
                     </div>
                     :
                     <div style={{
-                        overflow: "auto"
+                        overflow: "auto",
+                        width:'100%',
+                        whiteSpace:'normal'
                     }
                     }>
-                        Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
-                        End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
+                        {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} 
+                        <span> - </span>
+                        {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
                     </div>
                     }
 
-            </h6>
+            </div>
         </div>
-);
+)};
 
 export default DragLayer(collect)(EventLayer)
