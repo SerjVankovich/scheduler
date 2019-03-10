@@ -9,11 +9,35 @@ import HTML5BACKEND from 'react-dnd-html5-backend'
 import EventPreview from "./connectedComponents/EventPreview";
 
 class App extends Component {
+  constructor(){
+    super();
+    const init = new Date();
+    this.state={
+      currentTime: init,
+      minutes: init.getMinutes()
+    }
+    this.tick =  this.tick.bind(this);
+  }
+  componentDidMount(){ 
+      this.intervalHandle = setInterval(this.tick, 30000);
+  }
+  componentWillUnmount(){
+    clearInterval(this.intervalHandle);
+  }
+  tick() {
+    const current = new Date();
+    const min = current.getMinutes();
+    if (min !== this.state.minutes) {
+      this.setState({
+        currentTime: current,
+        minutes: current.getMinutes()
+      });
+    }
+  }
   render() {
     const {weekStart, dayStart, dayEnd, cells, delimiter} = this.props;
     const week = makeWeek(weekStart);
     const days = makeDays(dayStart, dayEnd);
-    const currentTime = (new Date);
     return (
       <table width="100%" cellPadding={0} cellSpacing={0}>
         <tbody>
@@ -29,7 +53,7 @@ class App extends Component {
 
             <tr key={index}>
               <td>
-                <DayCell date={day} currentTime={currentTime}/>
+                <DayCell date={day} currentTime={this.state.currentTime}/>
                 
               </td>
 
