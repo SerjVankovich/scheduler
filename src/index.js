@@ -21,7 +21,8 @@ const store = storeFactory({
     dayStart: config.dayStart,
     dayEnd: config.dayEnd,
     weekStart,
-    delimiter: config.delimiter
+    delimiter: config.delimiter,
+    lastHoveredSubCell: null
 });
 
 console.log(store.getState());

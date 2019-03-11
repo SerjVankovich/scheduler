@@ -2,7 +2,6 @@
     border: 0 solid #282c34;
     border-bottom-width: 2px;
     font-size: 20px;
-    text-align: left;
     min-height: 100px;
     height: 100px;
     min-width: 100px;
@@ -35,7 +34,11 @@
     margin: 0;
 }
 .subCell {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
     width: 100%;
     border: 0 dashed #282c34;
+    border-right: 1px solid;
     border-bottom-width: 1px;
 }

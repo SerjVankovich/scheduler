@@ -5,9 +5,8 @@ import {DragSource} from "react-dnd";
 
 const eventSource = {
     beginDrag(props) {
-        return props
+        return {...props, startDragging: true}
     },
-
     /*isDragging(props, monitor) {
         const cellId = monitor.getItem().address;
         const subCell = monitor.getItem().subCell;
@@ -41,19 +40,26 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource } = this.props;
+        const { event, isDragging, connectDragSource, startDrag, numOfEvents} = this.props;
+        // font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+        const eventHeight = parseInt(getHeightOfEvent(event)) - 2;
+        const fontBase = eventHeight< 50 ? '11' : '14';
+        const width = startDrag ? 100 / (numOfEvents + 1) + "%" : numOfEvents > 1 ? 100 / numOfEvents + "%" : "100%";
+        console.log(startDrag);
         return connectDragSource(
             <div className="event" style=
                 {{
                     background: event.color,
-                    height: parseInt(getHeightOfEvent(event)) - 2,
-                    display: isDragging ? "none" : "inline"
-                }}>
-                <h6>
+                    height: eventHeight,
+                    display: isDragging ? "none" : "inline",
+                    opacity: startDrag ? 0.5 : 1,
+                    fontSize: `${fontBase}px`,
+                    width
+                }}> 
                     {event.title} <br/>
-                    Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
-                    End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
-                </h6>
+                    <div style={{width:'100%',whiteSpace:'normal'}}>{new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} 
+                    <span> - </span>{new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}</div>
+                 
             </div>
 
         );
