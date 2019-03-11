@@ -21,8 +21,6 @@ const SubCell = ({address, delimiter, num, me, dayStart, deleteEvent, replaceEve
     if (hovered) {
         setSubCellHovered(me, num)
     }
-
-    const twoEvents = me.events.length === 2;
     return connectDropTarget(
         <div className="subCell" style=
             {{

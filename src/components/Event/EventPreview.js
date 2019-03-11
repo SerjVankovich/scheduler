@@ -99,10 +99,12 @@ const getEnd = (subCell, event, item) => {
 export const EventPreview = ({ event, hoveredSubCell, item}) => {
         const eventHeight = parseInt(getHeightOfEvent(event)) - 2;
         const fontBase = eventHeight< 50 ? '11' : '14';
+        const suspect =hoveredSubCell.events.find(x => x && item && item.event && x.id===item.event.id);
+        const numEvents = suspect ? hoveredSubCell.events.length: hoveredSubCell.events.length + 1;
         return (
         
         <div className='event-preview' style={{
-                width: 100 / (hoveredSubCell.events.length + 1) + "%",
+                width: 100 / (numEvents) + "%",
                 background: event.color,
                 height: parseInt(getHeightOfEvent(event)) - 2,
                 fontSize: `${fontBase}px`,
