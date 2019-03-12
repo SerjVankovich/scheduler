@@ -49,19 +49,25 @@ class Event extends React.Component {
         return connectDragSource(
             <div className="event" style=
                 {{
+                    position: 'relative',
                     background: event.color,
                     height: eventHeight,
-                    display: isDragging ? "none" : "inline",
+                    display: isDragging ? "none" : "flex",
                     opacity: startDrag ? 0.5 : 1,
                     fontSize: `${fontBase}px`,
+                    flexDirection: 'column',
                     width
                 }}> 
                     {event.title} <br/>
                     <div style={{width:'100%',whiteSpace:'normal'}}>{new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} 
-                    <span> - </span>{new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}</div>
-                 
+                    <span> - </span>{new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
+                    </div>
+            <div className="handle" style={{ 
+                marginTop: 'auto', padding:0, borderBottomColor:'#c0c0c0', fontSize:'1px',lineHeight:'2px',
+                width:'100%', cursor: 'ns-resize'}}>
+            &nbsp;
             </div>
-
+            </div>
         );
     }
 }
