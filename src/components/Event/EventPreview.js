@@ -36,7 +36,7 @@ function getItemStyles(currentOffset) {
 
 class EventLayer extends React.Component {
     render() {
-        const { item, isDragging, currentOffset, lastHoveredSubCell} = this.props;
+        const { item, isDragging, currentOffset, lastHoveredSubCell, setSubCellDirection} = this.props;
         if (!isDragging) {
             return null
         }
@@ -44,7 +44,7 @@ class EventLayer extends React.Component {
             switch (type) {
                 case "event":
                     return (
-                        <EventPreview hoveredSubCell={lastHoveredSubCell} item={item} event={item.event}/>
+                        <EventPreview setSubCellDirection={setSubCellDirection} hoveredSubCell={lastHoveredSubCell} item={item} event={item.event}/>
                     );
                 default: return null
             }
@@ -72,7 +72,6 @@ const getDuration = (event) => {
 }
 
 const getStart = (subCell, item) => {
-        console.log(subCell, item)
         return {
             startHours: subCell.address[0] + item.dayStart,
             startMinutes: subCell.num * item.delimiter
@@ -94,11 +93,47 @@ const getEnd = (subCell, event, item) => {
         }
 }
 
+const meInside = (eventStart, evStart, eventEnd, evEnd) => (eventStart > evStart && eventStart < evEnd) || (eventEnd <= evEnd && eventEnd > evStart);
+const meWrap = (eventStart, evStart, eventEnd, evEnd) => (evStart >= eventStart ) && (evEnd <= eventEnd);
+
+const isCollision = (subCell, event, events, item) => {
+        return events.filter(ev => {
+            const evStart = new Date(ev.start).getHours() + new Date(ev.start).getMinutes() / 60;
+            const evEnd = new Date(ev.end).getHours() + new Date(ev.end).getMinutes() / 60;
+
+            const eventStart = getStart(subCell, item).startHours + getStart(subCell, item).startMinutes / 60;
+            const eventEnd = getEnd(subCell, event, item).endHours + getEnd(subCell, event, item).endMinutes / 60;
+
+            const dayEvent = subCell.address[1] === 6 ? 0 : subCell.address[1] + 1;
+            const dayEv = new Date(ev.start).getDay();
+
+            return (meInside(eventStart, evStart, eventEnd, evEnd) || meWrap(eventStart, evStart, eventEnd, evEnd)) && (dayEv === dayEvent) && event.id !== ev.id;
+
+        })
+};
 
 
-export const EventPreview = ({ event, hoveredSubCell, item}) => (
+
+export const EventPreview = ({ event, hoveredSubCell, item, events, setSubCellDirection, setCollisionNum, lastHoveredSubCell}) => {
+        const eventsCollisions = isCollision(hoveredSubCell, event, events, item);
+        let max = 0;
+
+        eventsCollisions.forEach(event => {
+            max = event.num > max ? event.num : max
+        });
+
+        if (eventsCollisions.length !== 0) {
+            setCollisionNum(event.id, eventsCollisions.length);
+            eventsCollisions.forEach(eventCol => {
+                setCollisionNum(eventCol.id, 1)
+            });
+            setSubCellDirection(lastHoveredSubCell, "row")
+            setSubCellDirection(hoveredSubCell, "row-reverse");
+        }
+
+        return (
         <div className='event-preview' style={{
-                width: 100 / (hoveredSubCell.events.length + 1) + "%",
+                width: hoveredSubCell.events.length !== 0 ? 100 / (hoveredSubCell.events.length + 1) + "%" : 100 / (max + 1) + "%",
                 background: event.color,
                 height: parseInt(getHeightOfEvent(event)) - 2,
             }}>
@@ -123,6 +158,7 @@ export const EventPreview = ({ event, hoveredSubCell, item}) => (
 
             </h6>
         </div>
-);
+)
+                }
 
 export default DragLayer(collect)(EventLayer)

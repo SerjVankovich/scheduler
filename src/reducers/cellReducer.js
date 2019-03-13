@@ -11,6 +11,9 @@ export default function cells(state=[], action) {
         case Constants.REPLACE_EVENT:
             state[action.cellAddress[0]][action.cellAddress[1]].subCells[action.subCell].events.push(action.event);
             return [...state];
+        case Constants.SET_SUBCELL_DIRECTION:
+            state[action.subCell.address[0]][action.subCell.address[1]].subCells[action.subCell.num].direction = action.direction;
+            return [...state];
         default: return state
     }
 }

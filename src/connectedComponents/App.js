@@ -9,7 +9,8 @@ const AppConnected = connect(
         dayStart: state.dayStart,
         dayEnd: state.dayEnd,
         cells: state.cells,
-        delimiter: state.delimiter
+        delimiter: state.delimiter,
+        events: state.data.events
     }),
 
     dispatch => ({

@@ -25,8 +25,6 @@ const store = storeFactory({
     lastHoveredSubCell: null
 });
 
-console.log(store.getState());
-
 ReactDOM.render(
     <Provider store={store}>
         <App />

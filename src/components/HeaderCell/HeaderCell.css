@@ -37,6 +37,7 @@
     display: flex;
     flex-wrap: wrap;
     align-content: stretch;
+    flex-direction: row;
     width: 100%;
     border: 0 dashed #282c34;
     border-right: 1px solid;

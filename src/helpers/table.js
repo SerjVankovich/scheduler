@@ -7,6 +7,7 @@ const getSubCells = (numSubCells, address) => {
         subCells.push({
             address,
             events: [],
+            direction: "row"
         })
     }
 
@@ -43,6 +44,8 @@ export const makeTable = (week, dayStart, cols, delimiter) => {
         event.color = getEventColor();
         const date = new Date(event.start);
         if (isInThisWeek(date, week)) {
+            event.num = 1;
+            event.collisionNum = 0;
             const hours = date.getHours() - dayStart;
             const minutes = date.getMinutes();
             const subCellIndex = parseInt(minutes / delimiter);

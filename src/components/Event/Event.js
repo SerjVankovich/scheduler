@@ -20,7 +20,6 @@ const eventSource = {
         }
         const cellId = monitor.getDropResult().address;
         const subCell = monitor.getDropResult().subCell;
-        console.log(props.deleteEvent);
         props.deleteEvent(props.address, props.event.id, props.subCell);
         return props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
 
@@ -40,10 +39,10 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource, startDrag, numOfEvents} = this.props;
+        const { event, isDragging, connectDragSource, startDrag} = this.props;
+        const { num: numOfEvents, collisionNum } = event;
 
-        const width = startDrag ? 100 / (numOfEvents + 1) + "%" : numOfEvents > 1 ? 100 / numOfEvents + "%" : "100%";
-        console.log(startDrag);
+        const width = startDrag ? 100 / (numOfEvents + 1 + collisionNum) + "%" : numOfEvents > 1 ? 100 / (numOfEvents + collisionNum) + "%" : 100 / (collisionNum + 1) + "%";
         return connectDragSource(
             <div className="event" style=
                 {{
@@ -53,11 +52,15 @@ class Event extends React.Component {
                     opacity: startDrag ? 0.5 : 1,
                     width
                 }}>
-                <h6>
-                    {event.title} <br/>
-                    Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
-                    End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
-                </h6>
+                    <h6 style={{
+                        height: "100%",
+                        width: "100%"
+                    }}>
+                        {event.title} <br/>
+                        Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
+                        End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
+                    </h6>
+
             </div>
 
         );

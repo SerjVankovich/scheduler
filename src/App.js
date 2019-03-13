@@ -10,7 +10,7 @@ import EventPreview from "./connectedComponents/EventPreview";
 
 class App extends Component {
   render() {
-    const {weekStart, dayStart, dayEnd, cells, delimiter} = this.props;
+    const {weekStart, dayStart, dayEnd, cells, delimiter, events} = this.props;
     const week = makeWeek(weekStart);
     const days = makeDays(dayStart, dayEnd);
 
@@ -34,7 +34,7 @@ class App extends Component {
 
               {cells[index].map((cell, i) => (
                   <td key={i}>
-                    <Cell setSubCellHovered={this.props.setSubCellHovered} delimiter={delimiter} miniCells={cell.subCells} dayStart={dayStart} deleteEvent={this.props.deleteEvent} replaceEvent={this.props.replaceEvent} address={cell.address}/>
+                    <Cell events={events} setSubCellHovered={this.props.setSubCellHovered} delimiter={delimiter} miniCells={cell.subCells} dayStart={dayStart} deleteEvent={this.props.deleteEvent} replaceEvent={this.props.replaceEvent} address={cell.address}/>
                   </td>
               ))}
 
