@@ -47,13 +47,16 @@ class Event extends React.Component {
         const { event, numOfEvents, index } = props;
         const eventHeight = parseInt(getHeightOfEvent(event)) - 2;
         const fontBase = eventHeight< 50 ? '11' : '14';
-        const width = numOfEvents > 1 ? 200 / numOfEvents : 200;
-        const offset = index === 0 ? 0 : index * 200/numOfEvents;
+        const baseWidth = props.divWidth || 200;
+        console.log(baseWidth)
+        const width = numOfEvents > 1 ? baseWidth / numOfEvents : baseWidth;
+        const offset = index === 0 ? 0 : index * baseWidth/numOfEvents;
         this.state = {
-          width,
-          height: eventHeight,
-          x: offset,
-          y: 0
+            index,
+            width,
+            height: eventHeight,
+            x: offset,
+            y: 0
         };
       }
     componentDidMount() {
@@ -61,7 +64,14 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource, startDrag, numOfEvents} = this.props;
+        // console.log('rerendering event');
+        const { event, divWidth, isDragging, connectDragSource, startDrag, numOfEvents} = this.props;
+        
+        const baseWidth = divWidth || 200;
+        // console.log(baseWidth)
+        const width = numOfEvents > 1 ? baseWidth / numOfEvents : baseWidth;
+        const offset = this.state.index === 0 ? 0 : this.state.index * baseWidth/numOfEvents;
+        const resizeRules = { top:true, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false };
         // font-size: calc(16px + 6 * ((100vw - 320px) / 680));
         // const eventHeight = parseInt(getHeightOfEvent(event)) - 2;
         // const fontBase = eventHeight< 50 ? '11' : '14';
@@ -69,21 +79,21 @@ class Event extends React.Component {
         // console.log(startDrag);
         return (<Rnd
         style={style}
-        size={{ width: this.state.width, height: this.state.height }}
-        position={{ x: this.state.x, y: this.state.y }}
+        size={{ width: width - 5, height: this.state.height }}
+        position={{ x: offset, y: this.state.y }}
         onDragStop={(e, d) => {
           this.setState({ x: d.x, y: d.y });
         }}
         onResize={(e, direction, ref, delta, position) => {
           this.setState({
-            width: ref.style.width,
+            // width: ref.style.width,
             height: ref.style.height,
             ...position
           });
         }}
-        
-        resizeGrid={[200, 25]}
-        dragGrid={[200, 25]}
+        enableResizing = {resizeRules}
+        resizeGrid={[200, 1]}
+        dragGrid={[200, 1]}
       >
         {event.title} <br/>
         <div style={{width:'100%',whiteSpace:'normal'}}>{new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} 
