@@ -7,6 +7,7 @@ import weekStart from "../reducers/weekStartReducer";
 import data from "../reducers/dataReducer"
 import delimiter from "../reducers/delimiterReducer";
 import lastHoveredSubCell from "../reducers/hoveredSubCellReducer"
+import collisions from "../reducers/collisionReducer";
 
 const initState = {
     data: {
@@ -19,12 +20,13 @@ const initState = {
     dayEnd: 23,
     weekStart: 0,
     delimiter: 60,
-    lastHoveredSubCell: null
+    lastHoveredSubCell: null,
+    collisions: []
 };
 
 const storeFactory = (initialState=initState) => {
     const middleWare = applyMiddleware(createLogger());
-    return createStore(combineReducers({cells, dayStart, dayEnd, weekStart, data, delimiter, lastHoveredSubCell}), initialState, middleWare)
+    return createStore(combineReducers({cells, dayStart, dayEnd, weekStart, data, delimiter, lastHoveredSubCell, collisions}), initialState, middleWare)
 };
 
 export default storeFactory

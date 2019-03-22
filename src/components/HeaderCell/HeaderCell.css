@@ -34,10 +34,8 @@
     margin: 0;
 }
 .subCell {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     align-content: stretch;
-    flex-direction: row;
     width: 100%;
     border: 0 dashed #282c34;
     border-right: 1px solid;

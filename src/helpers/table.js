@@ -1,5 +1,5 @@
 import data from "../data";
-import {getEventColor, isInThisWeek} from "./eventToIndexHelper";
+import {getEventColor, isInThisWeek} from "./eventsHelper";
 
 const getSubCells = (numSubCells, address) => {
     const subCells = [];
@@ -44,7 +44,7 @@ export const makeTable = (week, dayStart, cols, delimiter) => {
         event.color = getEventColor();
         const date = new Date(event.start);
         if (isInThisWeek(date, week)) {
-            event.num = 1;
+            event.order = 1
             event.collisionNum = 0;
             const hours = date.getHours() - dayStart;
             const minutes = date.getMinutes();

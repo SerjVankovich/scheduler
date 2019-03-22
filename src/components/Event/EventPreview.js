@@ -1,6 +1,6 @@
 import React from 'react'
 import {DragLayer} from "react-dnd";
-import {getHeightOfEvent} from "../../helpers/eventToIndexHelper";
+import {getHeightOfEvent} from "../../helpers/eventsHelper";
 
 const collect = (monitor) => ({
     item: monitor.getItem(),
@@ -96,7 +96,7 @@ const getEnd = (subCell, event, item) => {
 const meInside = (eventStart, evStart, eventEnd, evEnd) => (eventStart > evStart && eventStart < evEnd) || (eventEnd <= evEnd && eventEnd > evStart);
 const meWrap = (eventStart, evStart, eventEnd, evEnd) => (evStart >= eventStart ) && (evEnd <= eventEnd);
 
-const isCollision = (subCell, event, events, item) => {
+export const isCollision = (subCell, event, events, item) => {
         return events.filter(ev => {
             const evStart = new Date(ev.start).getHours() + new Date(ev.start).getMinutes() / 60;
             const evEnd = new Date(ev.end).getHours() + new Date(ev.end).getMinutes() / 60;
@@ -114,26 +114,28 @@ const isCollision = (subCell, event, events, item) => {
 
 
 
-export const EventPreview = ({ event, hoveredSubCell, item, events, setSubCellDirection, setCollisionNum, lastHoveredSubCell}) => {
+export const EventPreview = ({ event, hoveredSubCell, item, events, setStartNum, setEndNum, replaceCollisions, clearCollisions}) => {
         const eventsCollisions = isCollision(hoveredSubCell, event, events, item);
         let max = 0;
 
         eventsCollisions.forEach(event => {
-            max = event.num > max ? event.num : max
+            max = event.startNum > max ? event.startNum : max;
         });
 
         if (eventsCollisions.length !== 0) {
-            setCollisionNum(event.id, eventsCollisions.length);
-            eventsCollisions.forEach(eventCol => {
-                setCollisionNum(eventCol.id, 1)
-            });
-            setSubCellDirection(lastHoveredSubCell, "row")
-            setSubCellDirection(hoveredSubCell, "row-reverse");
+            replaceCollisions(event, eventsCollisions)
+        } else {
+            clearCollisions(event)
         }
+
+
+        const width = hoveredSubCell.events.length !== 0 ? 100 / (hoveredSubCell.events.length + 1) + "%" : 100 / (max + 1) + "%";
 
         return (
         <div className='event-preview' style={{
-                width: hoveredSubCell.events.length !== 0 ? 100 / (hoveredSubCell.events.length + 1) + "%" : 100 / (max + 1) + "%",
+                gridColumnStart: event.order,
+                gridColumnEnd: event.order + 1,
+                width: "100%",
                 background: event.color,
                 height: parseInt(getHeightOfEvent(event)) - 2,
             }}>

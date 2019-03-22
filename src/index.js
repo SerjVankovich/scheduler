@@ -9,6 +9,7 @@ import { makeEmptyTable, makeTable} from "./helpers/table";
 import config from './config'
 import data from './data'
 import {Provider} from "react-redux";
+import {fillCollisions} from "./helpers/eventsHelper";
 
 const weekStart = new Date(2018, 3, 30);
 
@@ -22,8 +23,11 @@ const store = storeFactory({
     dayEnd: config.dayEnd,
     weekStart,
     delimiter: config.delimiter,
-    lastHoveredSubCell: null
+    lastHoveredSubCell: null,
+    collisions: fillCollisions(data.events)
 });
+
+console.log(store.getState())
 
 ReactDOM.render(
     <Provider store={store}>

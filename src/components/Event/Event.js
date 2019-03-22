@@ -1,7 +1,9 @@
 import React from 'react'
 import "./Event.css"
-import {getHeightOfEvent} from "../../helpers/eventToIndexHelper";
+import {getHeightOfEvent} from "../../helpers/eventsHelper";
 import {DragSource} from "react-dnd";
+import {isCollision} from "./EventPreview";
+import {setEndNum} from "../../actions/eventActions";
 
 const eventSource = {
     beginDrag(props) {
@@ -39,27 +41,29 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource, startDrag} = this.props;
-        const { num: numOfEvents, collisionNum } = event;
+        const { event, isDragging, connectDragSource, startDrag, collisions } = this.props;
+        const myCollisions = collisions[event.id];
+        const order = myCollisions.order;
 
-        const width = startDrag ? 100 / (numOfEvents + 1 + collisionNum) + "%" : numOfEvents > 1 ? 100 / (numOfEvents + collisionNum) + "%" : 100 / (collisionNum + 1) + "%";
+        console.log(event.title, order);
+
+        //const width = startDrag ? 100 / (index + 1 + collisionNum) + "%" : index > 1 ? 100 / (index + collisionNum) + "%" : 100 / (collisionNum + 1) + "%";
         return connectDragSource(
             <div className="event" style=
                 {{
+                    gridColumnStart: order,
+                    gridColumnEnd: order + 1,
                     background: event.color,
                     height: parseInt(getHeightOfEvent(event)) - 2,
                     display: isDragging ? "none" : "inline",
                     opacity: startDrag ? 0.5 : 1,
-                    width
+                    width: "100%"
                 }}>
-                    <h6 style={{
-                        height: "100%",
-                        width: "100%"
-                    }}>
+                    <p style={{ fontSize: 5 }}>
                         {event.title} <br/>
                         Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
                         End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
-                    </h6>
+                    </p>
 
             </div>
 

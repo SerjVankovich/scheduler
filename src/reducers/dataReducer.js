@@ -30,17 +30,17 @@ export default function events(state={}, action) {
                 }
             });
             return {...state};
-        case Constants.SET_NUM:
+        case Constants.SET_START_NUM:
             state.events.forEach(event => {
                 if (event.id === action.eventId) {
-                    event.num = action.num
+                    event.startNum = action.num
                 }
             });
             return {...state};
-        case Constants.SET_COLLISION_NUM:
+        case Constants.SET_END_NUM:
             state.events.forEach(event => {
                 if (event.id === action.eventId) {
-                    event.collisionNum = action.num
+                    event.endNum = action.num
                 }
             });
             return {...state};

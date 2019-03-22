@@ -1,11 +1,14 @@
 import { connect } from 'react-redux'
 import SubCell from "../components/Cell/SubCell";
-import {setNumEventsInSubCell} from "../actions/eventActions";
+import { setStartNum, setEndNum } from "../actions/eventActions";
 
 const SubCellConnected = connect(
-    () => ({}),
+    state => ({
+        collisions: state.collisions
+    }),
     dispatch => ({
-        setEventNum(eventId, num) { return dispatch(setNumEventsInSubCell(eventId, num))}
+        setStartNum(eventId, num) { return dispatch(setStartNum(eventId, num))},
+        setEndNum(eventId, num) { return dispatch(setEndNum(eventId, num))}
     })
 )(SubCell);
 
