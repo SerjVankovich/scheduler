@@ -1,11 +1,61 @@
 import Constants from "../actions/constants"
-import {findMaxOrder, findMaxOrderInCollision, getOrder} from "../helpers/eventsHelper";
+import {findMaxOrderInCollision, getOrder} from "../helpers/eventsHelper";
+
+const deleteMe = (me, state) => {
+    const myCollisions = state[me.id].collisions;
+    myCollisions.forEach(collision => {
+        let theirCollisions = state[collision.id].collisions;
+        console.log(theirCollisions);
+        theirCollisions = theirCollisions.filter(col => {
+            if (col.order > me.order) {
+                col.order -= 1
+            }
+            return col.id !== me.id
+        });
+        console.log(theirCollisions);
+        state[collision.id].collisions = theirCollisions
+    });
+    console.log(state);
+
+    return state
+};
+
+const deleteCollisions = (id, state) => {
+    state[id].collisions = [];
+    state[id].order = 1;
+
+    return state
+};
+
+const setNewMe = (me, collisions, state) => {
+    collisions.forEach(collision => {
+        const maxOrder = findMaxOrderInCollision(collisions);
+        me.order = maxOrder + 1;
+        state[collision.id].collisions = [...state[collision.id].collisions, me]
+    });
+
+    return state
+};
+
+const setMyCollisions = (me, collisions, state) => {
+    const maxOrder = findMaxOrderInCollision(collisions);
+    state[me.id].collisions = collisions;
+    state[me.id].order = maxOrder + 1;
+    return state
+}
 
 export default function collisions(state={}, action) {
     switch (action.type) {
         case Constants.REMOVE_COLLISIONS:
             // TODO Fix all this branch
-            let order = getOrder(action.event, state);
+
+            state = deleteMe(action.event, state);
+            state = deleteCollisions(action.event.id, state);
+            state = setNewMe(action.event, action.collisions, state);
+            state = setMyCollisions(action.event, action.collisions, state);
+
+            return state;
+            /*let order = getOrder(action.event, state);
 
 
             const collisions = state[action.event.id].collisions;
@@ -35,9 +85,9 @@ export default function collisions(state={}, action) {
                 state[collision.id].collisions = [...state[collision.id].collisions, action.event]
             });
 
-            return state;
+            return state; */
         case Constants.CLEAR_COLLISIONS:
-            order = state[action.event.id].order;
+            let order = state[action.event.id].order;
             state[action.event.id].collisions.forEach(collision => {
                 state[collision.id].collisions = state[collision.id].collisions.filter(collis => collis.id !== action.event.id);
 

@@ -78,4 +78,4 @@ export const findMaxOrderInCollision = (collisions) => findMaxOrder(1, collision
 
 export const getOrder = (event, collisions) => {
     return collisions[event.id].order
-}
+};
