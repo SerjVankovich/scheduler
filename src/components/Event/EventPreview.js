@@ -114,7 +114,7 @@ export const isCollision = (subCell, event, events, item) => {
 
 
 
-export const EventPreview = ({ event, hoveredSubCell, item, events, setStartNum, setEndNum, replaceCollisions, clearCollisions}) => {
+export const EventPreview = ({ event, hoveredSubCell, item, events, replaceCollisions, clearCollisions}) => {
         const eventsCollisions = isCollision(hoveredSubCell, event, events, item);
         let max = 0;
 
@@ -123,13 +123,11 @@ export const EventPreview = ({ event, hoveredSubCell, item, events, setStartNum,
         });
 
         if (eventsCollisions.length !== 0) {
-            replaceCollisions(event, eventsCollisions)
+            replaceCollisions(event, eventsCollisions);
+            replaceCollisions(event, eventsCollisions);
         } else {
-            clearCollisions(event)
+            //clearCollisions(event)
         }
-
-
-        const width = hoveredSubCell.events.length !== 0 ? 100 / (hoveredSubCell.events.length + 1) + "%" : 100 / (max + 1) + "%";
 
         return (
         <div className='event-preview' style={{

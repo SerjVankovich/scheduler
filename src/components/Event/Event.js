@@ -2,8 +2,6 @@ import React from 'react'
 import "./Event.css"
 import {getHeightOfEvent} from "../../helpers/eventsHelper";
 import {DragSource} from "react-dnd";
-import {isCollision} from "./EventPreview";
-import {setEndNum} from "../../actions/eventActions";
 
 const eventSource = {
     beginDrag(props) {
@@ -41,13 +39,11 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource, startDrag, collisions } = this.props;
+        const { event, isDragging, connectDragSource, startDrag, collisions} = this.props;
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
 
-        console.log(event.title, order);
 
-        //const width = startDrag ? 100 / (index + 1 + collisionNum) + "%" : index > 1 ? 100 / (index + collisionNum) + "%" : 100 / (collisionNum + 1) + "%";
         return connectDragSource(
             <div className="event" style=
                 {{

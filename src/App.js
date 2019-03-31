@@ -6,7 +6,6 @@ import {makeWeek} from "./helpers/weekHelper";
 import {makeDays} from "./helpers/table";
 import {DragDropContext} from "react-dnd";
 import HTML5BACKEND from 'react-dnd-html5-backend'
-import EventPreview from "./connectedComponents/EventPreview";
 
 class App extends Component {
   render() {

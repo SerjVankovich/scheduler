@@ -18,7 +18,7 @@ const specCell = {
     },
 };
 
-const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, replaceEvent, connectDropTarget, hovered, setSubCellHovered, item, setStartNum, setEndNum, collisions}) => {
+const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, replaceEvent, connectDropTarget, hovered, setSubCellHovered, item, collisions, replaceCollisions, clearCollisions}) => {
     if (hovered) {
         setSubCellHovered(me, num)
     }
@@ -45,7 +45,7 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
                 gridTemplateColumns: gridStr
             }}>
             {me.events.map((event, i) => (
-                <Event collisions={collisions} events={me.events} startDrag={item ? item.startDragging : false} delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent} replaceEvent={replaceEvent} address={address} event={event} subCell={num} key={i} />
+                <Event collisions={collisions} events={me.events} startDrag={item ? item.startDragging : false} delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent} replaceEvent={replaceEvent} address={address} event={event} subCell={num}  key={i} />
             ))}
             { hovered ?
                 <EventPreview events={events} event={item.event} hoveredSubCell={me} item={item}/>
