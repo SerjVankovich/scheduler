@@ -114,25 +114,15 @@ export const isCollision = (subCell, event, events, item) => {
 
 
 
-export const EventPreview = ({ event, hoveredSubCell, item, events, replaceCollisions, clearCollisions}) => {
+export const EventPreview = ({ event, hoveredSubCell, item, events, replaceCollisions, collisions, clearCollisions}) => {
         const eventsCollisions = isCollision(hoveredSubCell, event, events, item);
-        let max = 0;
 
-        eventsCollisions.forEach(event => {
-            max = event.startNum > max ? event.startNum : max;
-        });
-
-        if (eventsCollisions.length !== 0) {
-            replaceCollisions(event, eventsCollisions);
-            replaceCollisions(event, eventsCollisions);
-        } else {
-            //clearCollisions(event)
-        }
+        const order = eventsCollisions.length + 1
 
         return (
         <div className='event-preview' style={{
-                gridColumnStart: event.order,
-                gridColumnEnd: event.order + 1,
+                gridColumnStart: order,
+                gridColumnEnd: order + 1,
                 width: "100%",
                 background: event.color,
                 height: parseInt(getHeightOfEvent(event)) - 2,

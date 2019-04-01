@@ -2,6 +2,7 @@ import React from 'react'
 import "./Event.css"
 import {getHeightOfEvent} from "../../helpers/eventsHelper";
 import {DragSource} from "react-dnd";
+import {isCollision} from "./EventPreview";
 
 const eventSource = {
     beginDrag(props) {
@@ -18,9 +19,19 @@ const eventSource = {
         if (!monitor.didDrop()) {
             return
         }
+
+        const collisions = isCollision(props.lastHoveredSubCell, props.event, props.events, monitor.getItem());
+        console.log(props.subCell)
+
+        if (collisions.length !== 0) {
+            props.replaceCollisions(props.event, collisions)
+        } else {
+            props.clearCollisions(props.event)
+        }
+
         const cellId = monitor.getDropResult().address;
         const subCell = monitor.getDropResult().subCell;
-        props.deleteEvent(props.address, props.event.id, props.subCell);
+        props.deleteEvent(props.address, props.event.id, props.subCellNum);
         return props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
 
     }
@@ -39,7 +50,8 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource, startDrag, collisions} = this.props;
+        const { event, isDragging, connectDragSource, startDrag, collisions } = this.props;
+
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
 
