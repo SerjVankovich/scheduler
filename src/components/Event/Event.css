@@ -4,6 +4,7 @@
     padding-left: 4px;
     padding-top: 4px;
     width: 100%;
+    position: relative;
     border-radius: 10px;
 }
 .event-preview {
@@ -12,4 +13,28 @@
     padding-top: 4px;
     width: 100%;
     border-radius: 10px
+}
+
+.resizable {
+    height: 100%;
+    width: 100%;
+}
+
+.resize-rect_1 {
+    width: 10px;
+    height: 1px;
+    position: absolute;
+    bottom: 6px;
+    left: 47%;
+    background: black;
+}
+
+.resize-rect_2 {
+    width: 10px;
+    height: 1px;
+    position: absolute;
+    bottom: 3px;
+    left: 47%;
+    background: black;
+
 }

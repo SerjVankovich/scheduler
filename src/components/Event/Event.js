@@ -3,10 +3,14 @@ import "./Event.css"
 import {getHeightOfEvent} from "../../helpers/eventsHelper";
 import {DragSource} from "react-dnd";
 import {isCollision} from "./EventPreview";
+import Resizable from "re-resizable";
 
 const eventSource = {
     beginDrag(props) {
         return {...props, startDragging: true}
+    },
+    canDrag(props, monitor) {
+        return props.canDrag
     },
     /*isDragging(props, monitor) {
         const cellId = monitor.getItem().address;
@@ -50,31 +54,44 @@ class Event extends React.Component {
     }
 
     render() {
-        const { event, isDragging, connectDragSource, startDrag, collisions } = this.props;
+        const { event, isDragging, connectDragSource, startDrag, collisions, switchDrag } = this.props;
+        console.log(switchDrag)
 
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
 
 
         return connectDragSource(
-            <div className="event" style=
-                {{
-                    gridColumnStart: order,
-                    gridColumnEnd: order + 1,
-                    background: event.color,
-                    height: parseInt(getHeightOfEvent(event)) - 2,
-                    display: isDragging ? "none" : "inline",
-                    opacity: startDrag ? 0.5 : 1,
-                    width: "100%"
-                }}>
-                    <p style={{ fontSize: 5 }}>
+            <div style={{
+                gridColumnStart: order,
+                gridColumnEnd: order + 1,
+                display: isDragging ? "none" : "inline",
+                width: "100%",
+                background: event.color,
+                borderRadius: 10
+            }}>
+                <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
+                           defaultSize={{ width: "100%", height: parseInt(getHeightOfEvent(event)) - 3}}
+                           onResizeStart={switchDrag}
+                           onResizeStop={switchDrag}
+                >
+                    <div className="event" style=
+                        {{
+                            background: event.color,
+                            height: parseInt(getHeightOfEvent(event)) - 15,
+                            opacity: startDrag ? 0.5 : 1,
+                        }}>
+                    <p style={{ fontSize: 10 }}>
                         {event.title} <br/>
                         Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
                         End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
                     </p>
 
+                    </div>
+                    <div className='resize-rect_1'/>
+                    <div className='resize-rect_2'/>
+            </Resizable>
             </div>
-
         );
     }
 }

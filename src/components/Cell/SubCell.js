@@ -44,7 +44,10 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
                 gridTemplateColumns: gridStr
             }}>
             {me.events.map((event, i) => (
-                <Event collisions={collisions} events={events} startDrag={item ? item.startDragging : false} delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent} replaceEvent={replaceEvent} address={address} subCellNum={num} event={event} subCell={{...me, num}}  key={i} />
+                        <Event collisions={collisions} events={events} startDrag={item ? item.startDragging : false}
+                               delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent}
+                               replaceEvent={replaceEvent} address={address} subCellNum={num} event={event}
+                               subCell={{...me, num}} key={i}/>
             ))}
             { hovered ?
                 <EventPreview events={events} event={item.event} hoveredSubCell={me} item={item}/>

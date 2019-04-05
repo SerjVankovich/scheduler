@@ -117,7 +117,7 @@ export const isCollision = (subCell, event, events, item) => {
 export const EventPreview = ({ event, hoveredSubCell, item, events, replaceCollisions, collisions, clearCollisions}) => {
         const eventsCollisions = isCollision(hoveredSubCell, event, events, item);
 
-        const order = eventsCollisions.length + 1
+        const order = eventsCollisions.length + 1;
 
         return (
         <div className='event-preview' style={{
