@@ -28,4 +28,9 @@ export const replaceCollisions = (event, collisions) => ({
 export const clearCollisions = event => ({
     type: Constants.CLEAR_COLLISIONS,
     event
+});
+
+export const setEndTime = (eventId, time) => ({
+    type: Constants.SET_END_TIME,
+    eventId, time
 })

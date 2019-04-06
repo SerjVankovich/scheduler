@@ -30,20 +30,16 @@ export default function events(state={}, action) {
                 }
             });
             return {...state};
-        case Constants.SET_START_NUM:
+        case Constants.SET_END_TIME:
             state.events.forEach(event => {
                 if (event.id === action.eventId) {
-                    event.startNum = action.num
+                    const eventDateEnd = new Date(event.end.valueOf());
+                    event.end = eventDateEnd.setMinutes(eventDateEnd.getMinutes() + action.time);
                 }
             });
             return {...state};
-        case Constants.SET_END_NUM:
-            state.events.forEach(event => {
-                if (event.id === action.eventId) {
-                    event.endNum = action.num
-                }
-            });
-            return {...state};
+
+
         default: return state
     }
 }

@@ -71,15 +71,21 @@ const getDuration = (event) => {
         }
 }
 
-const getStart = (subCell, item) => {
-        return {
-            startHours: subCell.address[0] + item.dayStart,
-            startMinutes: subCell.num * item.delimiter
-        }
+const getStart = (subCell, item, event) => {
+        return item === null ?
+            {
+                startHours: new Date(event.start.valueOf()).getHours(),
+                startMinutes: new Date(event.start.valueOf()).getMinutes()
+            }
+            :
+            {
+                startHours: subCell.address[0] + item.dayStart,
+                startMinutes: subCell.num * item.delimiter
+            }
 }
 
 const getEnd = (subCell, event, item) => {
-        const start = getStart(subCell, item);
+        const start = getStart(subCell, item, event);
         const startDate = new Date(event.start);
         startDate.setHours(start.startHours);
         startDate.setMinutes(start.startMinutes);
@@ -101,7 +107,7 @@ export const isCollision = (subCell, event, events, item) => {
             const evStart = new Date(ev.start).getHours() + new Date(ev.start).getMinutes() / 60;
             const evEnd = new Date(ev.end).getHours() + new Date(ev.end).getMinutes() / 60;
 
-            const eventStart = getStart(subCell, item).startHours + getStart(subCell, item).startMinutes / 60;
+            const eventStart = getStart(subCell, item, event).startHours + getStart(subCell, item, event).startMinutes / 60;
             const eventEnd = getEnd(subCell, event, item).endHours + getEnd(subCell, event, item).endMinutes / 60;
 
             const dayEvent = subCell.address[1] === 6 ? 0 : subCell.address[1] + 1;

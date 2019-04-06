@@ -4,6 +4,7 @@ import {getHeightOfEvent} from "../../helpers/eventsHelper";
 import {DragSource} from "react-dnd";
 import {isCollision} from "./EventPreview";
 import Resizable from "re-resizable";
+import config from "../../config";
 
 const eventSource = {
     beginDrag(props) {
@@ -25,7 +26,6 @@ const eventSource = {
         }
 
         const collisions = isCollision(props.lastHoveredSubCell, props.event, props.events, monitor.getItem());
-        console.log(props.subCell)
 
         if (collisions.length !== 0) {
             props.replaceCollisions(props.event, collisions)
@@ -49,17 +49,43 @@ const collect = (connect, monitor) => ({
 });
 
 class Event extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            event: props.event
+        }
+    }
+
     componentDidMount() {
         this.props.connectDragPreview(new Image())
     }
 
+    handleResize = (offsetTop, event) => mouseEvent => {
+        const offset = mouseEvent.y - offsetTop - parseInt(getHeightOfEvent(event)) + 7;
+        const subCells = Math.round(offset / (config.cellHeight / (60 / config.delimiter)));
+        event.end = new Date( event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + subCells * config.delimiter);
+        const collisions = isCollision(this.props.subCell, event, this.props.events, null);
+
+        if (collisions.length !== 0) {
+            this.props.replaceCollisions(event, collisions)
+        } else {
+            this.props.clearCollisions(event)
+        }
+        this.setState({
+            event: event
+        });
+        //setEndTime(event.id, subCells * config.delimiter);
+        //switchDrag()
+    };
+
     render() {
-        const { event, isDragging, connectDragSource, startDrag, collisions, switchDrag } = this.props;
-        console.log(switchDrag)
+        const { isDragging, connectDragSource, startDrag, collisions, switchDrag, address, subCell } = this.props;
+        const { event } = this.state;
 
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
-
+        const offsetTop = (address[0] + 1 + subCell.num / (60 / config.delimiter)) * config.cellHeight;
 
         return connectDragSource(
             <div style={{
@@ -71,8 +97,9 @@ class Event extends React.Component {
                 borderRadius: 10
             }}>
                 <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
-                           defaultSize={{ width: "100%", height: parseInt(getHeightOfEvent(event)) - 3}}
+                           defaultSize={{ width: "100%", height: parseInt(getHeightOfEvent(event)) + 5}}
                            onResizeStart={switchDrag}
+                           onResize={this.handleResize(offsetTop, event)}
                            onResizeStop={switchDrag}
                 >
                     <div className="event" style=
@@ -88,8 +115,6 @@ class Event extends React.Component {
                     </p>
 
                     </div>
-                    <div className='resize-rect_1'/>
-                    <div className='resize-rect_2'/>
             </Resizable>
             </div>
         );
