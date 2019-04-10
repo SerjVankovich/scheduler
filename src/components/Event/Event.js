@@ -53,7 +53,8 @@ class Event extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            event: props.event
+            event: props.event,
+            width: 100
         }
     }
 
@@ -73,15 +74,14 @@ class Event extends React.Component {
             this.props.clearCollisions(event)
         }
         this.setState({
-            event: event
+            event: event,
+            width: 100 / this.props.collisions[event.id].order
         });
-        //setEndTime(event.id, subCells * config.delimiter);
-        //switchDrag()
     };
 
     render() {
         const { isDragging, connectDragSource, startDrag, collisions, switchDrag, address, subCell } = this.props;
-        const { event } = this.state;
+        const { event, width } = this.state;
 
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
@@ -92,12 +92,12 @@ class Event extends React.Component {
                 gridColumnStart: order,
                 gridColumnEnd: order + 1,
                 display: isDragging ? "none" : "inline",
-                width: "100%",
                 background: event.color,
                 borderRadius: 10
             }}>
                 <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
-                           defaultSize={{ width: "100%", height: parseInt(getHeightOfEvent(event)) + 5}}
+                           defaultSize={{ width: width + "%", height: parseInt(getHeightOfEvent(event)) - 3}}
+                           size={{ width: width + "%", height: parseInt(getHeightOfEvent(event)) - 3}}
                            onResizeStart={switchDrag}
                            onResize={this.handleResize(offsetTop, event)}
                            onResizeStop={switchDrag}
@@ -107,6 +107,7 @@ class Event extends React.Component {
                             background: event.color,
                             height: parseInt(getHeightOfEvent(event)) - 15,
                             opacity: startDrag ? 0.5 : 1,
+                            width: width + "%"
                         }}>
                     <p style={{ fontSize: 10 }}>
                         {event.title} <br/>

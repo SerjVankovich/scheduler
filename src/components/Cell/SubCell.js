@@ -25,8 +25,7 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
     const isNotEmpty = me.events.length !== 0;
     let colsNum = 1;
     if (isNotEmpty) {
-        const firstEvent = collisions[me.events[0].id];
-        colsNum = findMaxOrder(firstEvent.order, firstEvent.collisions);
+        colsNum = findMaxOrder(me.events[0].id, collisions)
     }
 
 

@@ -7,7 +7,7 @@ const deleteMe = (me, state) => {
         let theirCollisions = state[collision.id].collisions;
         theirCollisions = theirCollisions.filter((col, id) => {
             if (col.order > me.order) {
-                theirCollisions[id].order -= 1
+                theirCollisions[id].order --
             }
             return col.id !== me.id
         });
@@ -51,13 +51,13 @@ export default function collisions(state={}, action) {
             state = setNewMe(action.event, action.collisions, state);
             state = setMyCollisions(action.event, action.collisions, state);
 
-            return state;
+            return {...state};
 
         case Constants.CLEAR_COLLISIONS:
             state = deleteMe(action.event, state);
             state = deleteCollisions(action.event.id, state);
 
-            return state;
+            return {...state};
 
 
         default: return state

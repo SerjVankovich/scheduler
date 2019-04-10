@@ -63,10 +63,27 @@ export const fillCollisions = events => {
      return collisions
 };
 
-export const findMaxOrder = (eventOrder, collisions) => {
-    let maxOrder = eventOrder;
-    collisions.forEach(collision => {
+export const findMaxOrder = (eventId, collisions) => {
+    let maxOrder = collisions[eventId].order;
+    collisions[eventId].collisions.forEach(collision => {
         if (collision.order > maxOrder) {
+            maxOrder = collision.order
+        }
+        console.log(collision);
+        collisions[collision.id].collisions.forEach(col => {
+            if (col.order > maxOrder) {
+                maxOrder = col.order
+            }
+        })
+    });
+
+    return maxOrder
+};
+
+const _findMaxOrder = (order, collisions) => {
+    let maxOrder = order;
+    collisions.forEach(collision => {
+        if (collision.order > maxOrder){
             maxOrder = collision.order
         }
     });
@@ -74,7 +91,7 @@ export const findMaxOrder = (eventOrder, collisions) => {
     return maxOrder
 };
 
-export const findMaxOrderInCollision = (collisions) => findMaxOrder(1, collisions);
+export const findMaxOrderInCollision = (collisions) => _findMaxOrder(1, collisions);
 
 export const getOrder = (event, collisions) => {
     return collisions[event.id].order
