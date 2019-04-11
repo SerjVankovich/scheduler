@@ -5,23 +5,25 @@ const deleteMe = (me, state) => {
     const myCollisions = state[me.id].collisions;
     myCollisions.forEach(collision => {
         let theirCollisions = state[collision.id].collisions;
+        const colOrder = state[collision.id].order;
+        state[collision.id].order = colOrder > me.order ? colOrder - 1 : colOrder;
         theirCollisions = theirCollisions.filter((col, id) => {
             if (col.order > me.order) {
-                theirCollisions[id].order --
+                theirCollisions[id].order = col.order - 1
             }
             return col.id !== me.id
         });
         state[collision.id].collisions = theirCollisions
     });
 
-    return state
+    return {...state}
 };
 
 const deleteCollisions = (id, state) => {
     state[id].collisions = [];
     state[id].order = 1;
 
-    return state
+    return {...state}
 };
 
 const setNewMe = (me, collisions, state) => {
@@ -31,14 +33,14 @@ const setNewMe = (me, collisions, state) => {
         state[collision.id].collisions = [...state[collision.id].collisions, me]
     });
 
-    return state
+    return {...state}
 };
 
 const setMyCollisions = (me, collisions, state) => {
     const maxOrder = findMaxOrderInCollision(collisions);
     state[me.id].collisions = collisions;
     state[me.id].order = maxOrder + 1;
-    return state
+    return {...state}
 };
 
 export default function collisions(state={}, action) {
@@ -57,7 +59,7 @@ export default function collisions(state={}, action) {
             state = deleteMe(action.event, state);
             state = deleteCollisions(action.event.id, state);
 
-            return {...state};
+            return {...state} ;
 
 
         default: return state
