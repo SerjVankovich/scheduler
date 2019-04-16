@@ -35,8 +35,8 @@ const eventSource = {
 
         const cellId = monitor.getDropResult().address;
         const subCell = monitor.getDropResult().subCell;
-        props.deleteEvent(props.address, props.event.id, props.subCellNum);
-        return props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
+        props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter)
+        return props.deleteEvent(props.address, props.event.id, props.subCellNum);
 
     }
 }
@@ -54,29 +54,46 @@ class Event extends React.Component {
         super(props);
         this.state = {
             event: props.event,
-            width: 100
+            width: 100,
+            offset: 0,
+            firstChange: true
         }
     }
 
     componentDidMount() {
-        this.props.connectDragPreview(new Image())
+        this.props.connectDragPreview(new Image());
     }
 
     handleResize = (offsetTop, event) => mouseEvent => {
-        const offset = mouseEvent.y - offsetTop - parseInt(getHeightOfEvent(event)) + 7;
-        const subCells = Math.round(offset / (config.cellHeight / (60 / config.delimiter)));
-        event.end = new Date( event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + subCells * config.delimiter);
-        const collisions = isCollision(this.props.subCell, event, this.props.events, null);
-
-        if (collisions.length !== 0) {
-            this.props.replaceCollisions(event, collisions)
+        const { offset, firstChange } = this.state;
+        const offsetMouse = mouseEvent.pageY;
+        if  (firstChange) {
+            this.setState({
+                firstChange: false,
+                offset: offsetMouse
+            })
         } else {
-            this.props.clearCollisions(event)
+            const difference = offsetMouse - offset;
+            const subCellHeight = config.cellHeight / (60 / config.delimiter);
+
+            if (Math.abs(difference) > subCellHeight / 2) {
+                const inc = difference > 0 ? config.delimiter : -1 * config.delimiter;
+                event.end = new Date( event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + inc);
+                const collisions = isCollision(this.props.subCell, event, this.props.events, null);
+
+                if (collisions.length !== 0) {
+                    this.props.replaceCollisions(event, collisions)
+                } else {
+                   this.props.clearCollisions(event)
+                }
+                this.setState({
+                    event: event,
+                    width: 100 / this.props.collisions[event.id].order,
+                    offset: offsetMouse
+                })
+            }
+
         }
-        this.setState({
-            event: event,
-            width: 100 / this.props.collisions[event.id].order
-        });
     };
 
     render() {

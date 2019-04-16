@@ -27,8 +27,6 @@ const store = storeFactory({
     collisions: fillCollisions(data.events)
 });
 
-console.log(store.getState())
-
 ReactDOM.render(
     <Provider store={store}>
         <App />

@@ -3,16 +3,17 @@ import {findMaxOrderInCollision} from "../helpers/eventsHelper";
 
 const deleteMe = (me, state) => {
     const myCollisions = state[me.id].collisions;
+    const order = state[me.id].order
+    console.log(myCollisions);
     myCollisions.forEach(collision => {
         let theirCollisions = state[collision.id].collisions;
         const colOrder = state[collision.id].order;
-        state[collision.id].order = colOrder > me.order ? colOrder - 1 : colOrder;
-        theirCollisions = theirCollisions.filter((col, id) => {
-            if (col.order > me.order) {
-                theirCollisions[id].order = col.order - 1
-            }
+        state[collision.id].order = colOrder > order ? colOrder - 1 : colOrder;
+        console.error(collision.title, state[collision.id].order);
+        theirCollisions = theirCollisions.filter(col => {
             return col.id !== me.id
         });
+
         state[collision.id].collisions = theirCollisions
     });
 
@@ -27,17 +28,16 @@ const deleteCollisions = (id, state) => {
 };
 
 const setNewMe = (me, collisions, state) => {
+    const maxOrder = findMaxOrderInCollision(collisions, state);
     collisions.forEach(collision => {
-        const maxOrder = findMaxOrderInCollision(collisions);
-        me.order = maxOrder + 1;
-        state[collision.id].collisions = [...state[collision.id].collisions, me]
+        state[collision.id].collisions = [...state[collision.id].collisions, {...me, order: maxOrder + 1}]
     });
 
     return {...state}
 };
 
 const setMyCollisions = (me, collisions, state) => {
-    const maxOrder = findMaxOrderInCollision(collisions);
+    const maxOrder = findMaxOrderInCollision(collisions, state);
     state[me.id].collisions = collisions;
     state[me.id].order = maxOrder + 1;
     return {...state}
@@ -46,8 +46,6 @@ const setMyCollisions = (me, collisions, state) => {
 export default function collisions(state={}, action) {
     switch (action.type) {
         case Constants.REMOVE_COLLISIONS:
-            console.log(action.event.title, action.collisions);
-
             state = deleteMe(action.event, state);
             state = deleteCollisions(action.event.id, state);
             state = setNewMe(action.event, action.collisions, state);

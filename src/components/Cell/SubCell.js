@@ -18,7 +18,7 @@ const specCell = {
     },
 };
 
-const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, replaceEvent, connectDropTarget, hovered, setSubCellHovered, item, collisions, replaceCollisions, clearCollisions}) => {
+const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, replaceEvent, connectDropTarget, hovered, setSubCellHovered, item, collisions}) => {
     if (hovered) {
         setSubCellHovered(me, num)
     }
@@ -27,6 +27,10 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
     if (isNotEmpty) {
         colsNum = findMaxOrder(me.events[0].id, collisions)
     }
+    if (me.events.length !== 0) {
+        console.error(me.events)
+    }
+
 
 
     const gridStr = item ?
@@ -46,7 +50,7 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
                         <Event collisions={collisions} events={events} startDrag={item ? item.startDragging : false}
                                delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent}
                                replaceEvent={replaceEvent} address={address} subCellNum={num} event={event}
-                               subCell={{...me, num}} key={i}/>
+                               subCell={{...me, num}} key={i} id={event.id}/>
             ))}
             { hovered ?
                 <EventPreview events={events} event={item.event} hoveredSubCell={me} item={item}/>

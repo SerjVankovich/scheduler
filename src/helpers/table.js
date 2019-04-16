@@ -48,7 +48,7 @@ export const makeTable = (week, dayStart, cols, delimiter) => {
             event.collisionNum = 0;
             const hours = date.getHours() - dayStart;
             const minutes = date.getMinutes();
-            const subCellIndex = parseInt(minutes / delimiter);
+            const subCellIndex = Math.round(minutes / delimiter);
             let day = date.getDay();
             if (day === 0) {
                 day = 6
