@@ -35,9 +35,8 @@ const eventSource = {
 
         const cellId = monitor.getDropResult().address;
         const subCell = monitor.getDropResult().subCell;
-        props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter)
-        return props.deleteEvent(props.address, props.event.id, props.subCellNum);
-
+        props.deleteEvent(props.address, props.event.id, props.subCellNum);
+        return props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
     }
 }
 
