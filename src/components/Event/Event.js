@@ -13,12 +13,6 @@ const eventSource = {
     canDrag(props, monitor) {
         return props.canDrag
     },
-    /*isDragging(props, monitor) {
-        const cellId = monitor.getItem().address;
-        const subCell = monitor.getItem().subCell;
-
-        return throttle(() => props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter), 1000)
-    }, */
 
     endDrag(props, monitor, component) {
         if (!monitor.didDrop()) {
@@ -35,8 +29,8 @@ const eventSource = {
 
         const cellId = monitor.getDropResult().address;
         const subCell = monitor.getDropResult().subCell;
-        props.deleteEvent(props.address, props.event.id, props.subCellNum);
-        return props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
+        props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
+        props.deleteEvent(props.address, props.index, props.subCell.num);
     }
 }
 
@@ -109,7 +103,8 @@ class Event extends React.Component {
                 gridColumnEnd: order + 1,
                 display: isDragging ? "none" : "inline",
                 background: event.color,
-                borderRadius: 10
+                borderRadius: 10,
+                height: getHeightOfEvent(event)
             }}>
                 <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
                            defaultSize={{ width: width + "%", height: parseInt(getHeightOfEvent(event)) - 3}}

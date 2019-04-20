@@ -87,8 +87,6 @@ const _findMaxOrder = (order, collisions, state) => {
             maxOrder = order
         }
     });
-    console.error(maxOrder);
-
     return maxOrder
 };
 

@@ -1,8 +1,8 @@
 import Constants from "./constants"
 
-export const deleteEvent = (cellAddress, eventId, subCell) => ({
+export const deleteEvent = (cellAddress, num, subCell) => ({
     type: Constants.DELETE_EVENT_FROM_CELL,
-    cellAddress, eventId, subCell
+    cellAddress, num, subCell
 });
 
 export const replaceEvent = (cellAddress, event, dayStart, subCell, delimiter) => ({
@@ -29,8 +29,3 @@ export const clearCollisions = event => ({
     type: Constants.CLEAR_COLLISIONS,
     event
 });
-
-export const setEndTime = (eventId, time) => ({
-    type: Constants.SET_END_TIME,
-    eventId, time
-})

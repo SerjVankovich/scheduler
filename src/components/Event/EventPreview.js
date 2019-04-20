@@ -1,66 +1,6 @@
 import React from 'react'
-import {DragLayer} from "react-dnd";
 import {getHeightOfEvent} from "../../helpers/eventsHelper";
 
-const collect = (monitor) => ({
-    item: monitor.getItem(),
-    itemType: monitor.getItemType(),
-    currentOffset: monitor.getSourceClientOffset(),
-    isDragging: monitor.isDragging(),
-});
-
-const layerStyles = {
-    position: 'fixed',
-    pointerEvents: 'none',
-    zIndex: 100,
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%'
-};
-
-function getItemStyles(currentOffset) {
-    if (!currentOffset) {
-        return {
-            display: 'none'
-        };
-    }
-
-    const { x, y } = currentOffset;
-    const transform = `translate(${x}px, ${y}px)`;
-    return {
-        transform: transform,
-        WebkitTransform: transform
-    };
-}
-
-class EventLayer extends React.Component {
-    render() {
-        const { item, isDragging, currentOffset, lastHoveredSubCell, setSubCellDirection} = this.props;
-        if (!isDragging) {
-            return null
-        }
-        function renderItem(type, item) {
-            switch (type) {
-                case "event":
-                    return (
-                        <EventPreview setSubCellDirection={setSubCellDirection} hoveredSubCell={lastHoveredSubCell} item={item} event={item.event}/>
-                    );
-                default: return null
-            }
-        }
-
-        return (
-            <div style={layerStyles}>
-                <div className='event' style={getItemStyles(currentOffset)}>
-                    {renderItem("event", item)}
-                </div>
-            </div>
-
-        )
-
-    }
-}
 
 const getDuration = (event) => {
         const hoursDuration = new Date(event.end).getHours() - new Date(event.start).getHours();
@@ -120,7 +60,7 @@ export const isCollision = (subCell, event, events, item) => {
 
 
 
-export const EventPreview = ({ event, hoveredSubCell, item, events, replaceCollisions, collisions, clearCollisions}) => {
+export const EventPreview = ({ event, hoveredSubCell, item, events}) => {
         const eventsCollisions = isCollision(hoveredSubCell, event, events, item);
 
         const order = eventsCollisions.length + 1;
@@ -156,5 +96,3 @@ export const EventPreview = ({ event, hoveredSubCell, item, events, replaceColli
         </div>
 )
                 }
-
-export default DragLayer(collect)(EventLayer)

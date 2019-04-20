@@ -3,8 +3,7 @@ import {findMaxOrderInCollision} from "../helpers/eventsHelper";
 
 const deleteMe = (me, state) => {
     const myCollisions = state[me.id].collisions;
-    const order = state[me.id].order
-    console.log(myCollisions);
+    const order = state[me.id].order;
     myCollisions.forEach(collision => {
         let theirCollisions = state[collision.id].collisions;
         const colOrder = state[collision.id].order;

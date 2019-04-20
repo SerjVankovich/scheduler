@@ -18,22 +18,3 @@
     height: 100%;
     width: 100%;
 }
-
-.resize-rect_1 {
-    width: 10px;
-    height: 1px;
-    position: absolute;
-    bottom: 6px;
-    left: 47%;
-    background: black;
-}
-
-.resize-rect_2 {
-    width: 10px;
-    height: 1px;
-    position: absolute;
-    bottom: 3px;
-    left: 47%;
-    background: black;
-
-}
