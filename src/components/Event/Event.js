@@ -27,10 +27,11 @@ const eventSource = {
             props.clearCollisions(props.event)
         }
 
+        const {event, address, index, dayStart, delimiter} = props;
         const cellId = monitor.getDropResult().address;
         const subCell = monitor.getDropResult().subCell;
-        props.replaceEvent(cellId, props.event, props.dayStart, subCell, props.delimiter);
-        props.deleteEvent(props.address, props.index, props.subCell.num);
+        props.replaceEvent(cellId, event, dayStart, subCell, delimiter);
+        props.deleteEvent(address, index, props.subCell.num);
     }
 }
 
@@ -43,35 +44,22 @@ const collect = (connect, monitor) => ({
 
 class Event extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            event: props.event,
-            width: 100,
-            offset: 0,
-            firstChange: true
-        }
-    }
-
     componentDidMount() {
         this.props.connectDragPreview(new Image());
     }
 
-    handleResize = (offsetTop, event) => mouseEvent => {
-        const { offset, firstChange } = this.state;
+    handleResize = (event) => mouseEvent => {
+        const { offset } = event;
         const offsetMouse = mouseEvent.pageY;
-        if  (firstChange) {
-            this.setState({
-                firstChange: false,
-                offset: offsetMouse
-            })
+        if  (offset === undefined) {
+            this.props.resizeEvent(event.id, null, offsetMouse)
         } else {
             const difference = offsetMouse - offset;
             const subCellHeight = config.cellHeight / (60 / config.delimiter);
 
-            if (Math.abs(difference) > subCellHeight / 2) {
+            if (Math.abs(difference) > subCellHeight) {
                 const inc = difference > 0 ? config.delimiter : -1 * config.delimiter;
-                event.end = new Date( event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + inc);
+                event.end = new Date(event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + inc);
                 const collisions = isCollision(this.props.subCell, event, this.props.events, null);
 
                 if (collisions.length !== 0) {
@@ -79,23 +67,18 @@ class Event extends React.Component {
                 } else {
                    this.props.clearCollisions(event)
                 }
-                this.setState({
-                    event: event,
-                    width: 100 / this.props.collisions[event.id].order,
-                    offset: offsetMouse
-                })
+                this.props.resizeEvent(event.id, inc, offsetMouse)
             }
 
         }
     };
 
     render() {
-        const { isDragging, connectDragSource, startDrag, collisions, switchDrag, address, subCell } = this.props;
-        const { event, width } = this.state;
+        const { isDragging, connectDragSource, startDrag, collisions, switchDrag, event } = this.props;
 
+        const width = 100 / collisions[event.id].order;
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
-        const offsetTop = (address[0] + 1 + subCell.num / (60 / config.delimiter)) * config.cellHeight;
 
         return connectDragSource(
             <div style={{
@@ -110,7 +93,7 @@ class Event extends React.Component {
                            defaultSize={{ width: width + "%", height: parseInt(getHeightOfEvent(event)) - 3}}
                            size={{ width: width + "%", height: parseInt(getHeightOfEvent(event)) - 3}}
                            onResizeStart={switchDrag}
-                           onResize={this.handleResize(offsetTop, event)}
+                           onResize={this.handleResize(event)}
                            onResizeStop={switchDrag}
                 >
                     <div className="event" style=

@@ -10,16 +10,6 @@ export const replaceEvent = (cellAddress, event, dayStart, subCell, delimiter) =
     cellAddress, event, dayStart, subCell, delimiter
 });
 
-export const setStartNum = (eventId, num) => ({
-    type: Constants.SET_START_NUM,
-    eventId, num
-});
-
-export const setEndNum = (eventId, num) => ({
-    type: Constants.SET_END_NUM,
-    eventId, num
-});
-
 export const replaceCollisions = (event, collisions) => ({
     type: Constants.REMOVE_COLLISIONS,
     event, collisions
@@ -29,3 +19,8 @@ export const clearCollisions = event => ({
     type: Constants.CLEAR_COLLISIONS,
     event
 });
+
+export const resizeEvent = (eventId, incrementedMinutes, offset) => ({
+    type: Constants.RESIZE_EVENT,
+    eventId, incrementedMinutes, offset
+})

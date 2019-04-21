@@ -8,7 +8,6 @@ const deleteMe = (me, state) => {
         let theirCollisions = state[collision.id].collisions;
         const colOrder = state[collision.id].order;
         state[collision.id].order = colOrder > order ? colOrder - 1 : colOrder;
-        console.error(collision.title, state[collision.id].order);
         theirCollisions = theirCollisions.filter(col => {
             return col.id !== me.id
         });

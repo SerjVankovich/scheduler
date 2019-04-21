@@ -38,8 +38,21 @@ export default function events(state={}, action) {
                 }
             });
             return {...state};
+        case Constants.RESIZE_EVENT:
+            state.events = state.events.map(event => {
+                if (event.id === action.eventId) {
+                    if (event.offset) {
+                        event.offset = action.offset
+                    } else {
+                        event.end = new Date( event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + action.incrementedMinutes);
+                        event.offset = action.offset
+                    }
+                }
 
+                return event
+            });
 
+            return {...state};
         default: return state
     }
 }
