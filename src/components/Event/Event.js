@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Event.css"
-import {getHeightOfEvent} from "../../helpers/eventsHelper";
+import {findMaxOrder, getHeightOfEvent} from "../../helpers/eventsHelper";
 import {DragSource} from "react-dnd";
 import {isCollision} from "./EventPreview";
 import Resizable from "re-resizable";
@@ -64,10 +64,11 @@ class Event extends React.Component {
 
                 if (collisions.length !== 0) {
                     this.props.replaceCollisions(event, collisions)
-                } else {
+                } else if (this.props.collisions[event.id].collisions.length !== 0) {
                    this.props.clearCollisions(event)
                 }
-                this.props.resizeEvent(event.id, inc, offsetMouse)
+                if (event.end.valueOf() > new Date(event.start).valueOf()) return this.props.resizeEvent(event.id, inc, offsetMouse)
+
             }
 
         }
@@ -75,35 +76,37 @@ class Event extends React.Component {
 
     render() {
         const { isDragging, connectDragSource, startDrag, collisions, switchDrag, event } = this.props;
-
-        const width = 100 / collisions[event.id].order;
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
+        const width = (window.innerWidth / 8) / findMaxOrder(event.id, collisions);
+
 
         return connectDragSource(
             <div style={{
+                overflow: 'visible',
+                zIndex: 2,
                 gridColumnStart: order,
                 gridColumnEnd: order + 1,
                 display: isDragging ? "none" : "inline",
                 background: event.color,
                 borderRadius: 10,
-                height: getHeightOfEvent(event)
+                width: width,
+                height: getHeightOfEvent(event) - 3
             }}>
                 <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
-                           defaultSize={{ width: width + "%", height: parseInt(getHeightOfEvent(event)) - 3}}
-                           size={{ width: width + "%", height: parseInt(getHeightOfEvent(event)) - 3}}
+                           defaultSize={{ width: "100%", height: parseInt(getHeightOfEvent(event)) - 3}}
+                           size={{ width: "100%", height: parseInt(getHeightOfEvent(event)) - 3}}
                            onResizeStart={switchDrag}
                            onResize={this.handleResize(event)}
                            onResizeStop={switchDrag}
                 >
                     <div className="event" style=
                         {{
-                            background: event.color,
                             height: parseInt(getHeightOfEvent(event)) - 15,
                             opacity: startDrag ? 0.5 : 1,
-                            width: width + "%"
+                            width: "100%"
                         }}>
-                    <p style={{ fontSize: 10 }}>
+                    <p style={{ fontSize: 10}}>
                         {event.title} <br/>
                         Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
                         End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
