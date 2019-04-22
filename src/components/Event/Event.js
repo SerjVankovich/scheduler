@@ -84,7 +84,6 @@ class Event extends React.Component {
         // This is solution of drag area problem, but it will provide new problems in production
         const width = (window.innerWidth / 8) / findMaxOrder(event.id, collisions);
 
-
         return connectDragSource(
             <div style={{
                 overflow: 'visible',
