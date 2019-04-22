@@ -67,7 +67,9 @@ class Event extends React.Component {
                 } else if (this.props.collisions[event.id].collisions.length !== 0) {
                    this.props.clearCollisions(event)
                 }
-                if (event.end.valueOf() > new Date(event.start).valueOf()) return this.props.resizeEvent(event.id, inc, offsetMouse)
+                if (event.end.valueOf() > new Date(event.start).valueOf()){
+                    return this.props.resizeEvent(event.id, inc, offsetMouse)
+                }
 
             }
 
@@ -78,6 +80,8 @@ class Event extends React.Component {
         const { isDragging, connectDragSource, startDrag, collisions, switchDrag, event } = this.props;
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
+
+        // This is solution of drag area problem, but it will provide new problems in production
         const width = (window.innerWidth / 8) / findMaxOrder(event.id, collisions);
 
 
@@ -90,7 +94,7 @@ class Event extends React.Component {
                 display: isDragging ? "none" : "inline",
                 background: event.color,
                 borderRadius: 10,
-                width: width,
+                width: '100%',
                 height: getHeightOfEvent(event) - 3
             }}>
                 <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
