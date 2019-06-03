@@ -33,7 +33,7 @@ const eventSource = {
         props.replaceEvent(cellId, event, dayStart, subCell, delimiter);
         props.deleteEvent(address, index, props.subCell.num);
     }
-}
+};
 
 const collect = (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
@@ -41,6 +41,13 @@ const collect = (connect, monitor) => ({
     isDragging: monitor.isDragging(),
     item: monitor.getItem()
 });
+
+const wrapMe = (subCell, collisions, events, cb) => {
+    collisions.forEach(collision => {
+        const cols = isCollision(subCell, collision, events, null);
+        cb(collision, cols)
+    })
+};
 
 class Event extends React.Component {
 
@@ -63,7 +70,12 @@ class Event extends React.Component {
                 const collisions = isCollision(this.props.subCell, event, this.props.events, null);
 
                 if (collisions.length !== 0) {
-                    this.props.replaceCollisions(event, collisions)
+                    const trulyOrder = this.props.collisions[event.id].order;
+                    if (trulyOrder === 1) {
+                        wrapMe(this.props.subCell, collisions, this.props.events, this.props.replaceCollisions)
+                    } else {
+                        this.props.replaceCollisions(event, collisions)
+                    }
                 } else if (this.props.collisions[event.id].collisions.length !== 0) {
                    this.props.clearCollisions(event)
                 }
