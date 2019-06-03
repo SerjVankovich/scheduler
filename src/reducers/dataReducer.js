@@ -22,9 +22,9 @@ export default function events(state={}, action) {
                     eventDate.setDate(eventDate.getDate() + differenceWeekDay);
                     eventDate.setHours(differenceHour);
                     eventDate.setMinutes(action.delimiter * action.subCell);
-                    eventEnd.setDate(eventDate.getDate() + differenceWeekDay);
+                    eventEnd.setDate(eventEnd.getDate() + differenceWeekDay);
                     eventEnd.setHours(eventDate.getHours()  + duration);
-                    eventEnd.setMinutes(eventDate.getMinutes() + durationMinutes )
+                    eventEnd.setMinutes(eventDate.getMinutes() + durationMinutes);
                     event.start = eventDate;
                     event.end = eventEnd
                 }

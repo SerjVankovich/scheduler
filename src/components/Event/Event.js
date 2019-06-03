@@ -58,6 +58,7 @@ class Event extends React.Component {
     handleResize = (event) => mouseEvent => {
         const { offset } = event;
         const offsetMouse = mouseEvent.pageY;
+        console.error(event.end);
         if  (offset === undefined) {
             this.props.resizeEvent(event.id, null, offsetMouse)
         } else {
