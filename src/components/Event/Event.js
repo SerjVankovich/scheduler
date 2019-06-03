@@ -72,10 +72,11 @@ class Event extends React.Component {
 
                 if (collisions.length !== 0) {
                     const trulyOrder = this.props.collisions[event.id].order;
-                    if (trulyOrder === 1) {
-                        wrapMe(this.props.subCell, collisions, this.props.events, this.props.replaceCollisions)
-                    } else {
-                        this.props.replaceCollisions(event, collisions)
+                    const collisionsBefore = collisions.filter(collision => collision.order < trulyOrder);
+                    const collisionsAfter = collisions.filter(collision => collision.order >= trulyOrder);
+                    wrapMe(this.props.subCell, collisionsAfter, this.props.events, this.props.replaceCollisions);
+                    if (collisionsBefore.length > 0) {
+                        this.props.replaceCollisions(event, collisionsBefore)
                     }
                 } else if (this.props.collisions[event.id].collisions.length !== 0) {
                    this.props.clearCollisions(event)
