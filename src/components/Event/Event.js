@@ -57,10 +57,11 @@ class Event extends React.Component {
 
     handleResize = (event) => mouseEvent => {
         const { offset } = event;
+        const {resizeEvent, replaceCollisions, clearCollisions, subCell, events} = this.props;
         const offsetMouse = mouseEvent.pageY;
         console.error(event.end);
         if  (offset === undefined) {
-            this.props.resizeEvent(event.id, null, offsetMouse)
+            resizeEvent(event.id, null, offsetMouse)
         } else {
             const difference = offsetMouse - offset;
             const subCellHeight = config.cellHeight / (60 / config.delimiter);
@@ -68,21 +69,24 @@ class Event extends React.Component {
             if (Math.abs(difference) > subCellHeight) {
                 const inc = difference > 0 ? config.delimiter : -1 * config.delimiter;
                 event.end = new Date(event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + inc);
-                const collisions = isCollision(this.props.subCell, event, this.props.events, null);
+                const collisions = isCollision(subCell, event, events, null);
 
                 if (collisions.length !== 0) {
+
                     const trulyOrder = this.props.collisions[event.id].order;
                     const collisionsBefore = collisions.filter(collision => collision.order < trulyOrder);
-                    const collisionsAfter = collisions.filter(collision => collision.order >= trulyOrder);
-                    wrapMe(this.props.subCell, collisionsAfter, this.props.events, this.props.replaceCollisions);
+                    const collisionsAfter = collisions.filter(collision => collision.order > trulyOrder);
+
+                    wrapMe(subCell, collisionsAfter, events, replaceCollisions);
+
                     if (collisionsBefore.length > 0) {
-                        this.props.replaceCollisions(event, collisionsBefore)
+                        replaceCollisions(event, collisionsBefore)
                     }
                 } else if (this.props.collisions[event.id].collisions.length !== 0) {
-                   this.props.clearCollisions(event)
+                    clearCollisions(event)
                 }
                 if (event.end.valueOf() > new Date(event.start).valueOf()){
-                    return this.props.resizeEvent(event.id, inc, offsetMouse)
+                    return resizeEvent(event.id, inc, offsetMouse)
                 }
 
             }
