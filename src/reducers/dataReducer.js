@@ -1,4 +1,5 @@
 import Constants from '../actions/constants'
+import {getHeightOfEvent} from "../helpers/eventsHelper";
 
 export default function events(state={}, action) {
     switch (action.type) {
@@ -41,12 +42,8 @@ export default function events(state={}, action) {
         case Constants.RESIZE_EVENT:
             state.events = state.events.map(event => {
                 if (event.id === action.eventId) {
-                    if (event.offset) {
-                        event.offset = action.offset
-                    } else {
-                        event.end = new Date( event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + action.incrementedMinutes);
-                        event.offset = action.offset
-                    }
+                    event.end = new Date(event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + action.incrementedMinutes);
+                    event.height = parseInt(getHeightOfEvent(event))
                 }
 
                 return event

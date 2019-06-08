@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Event.css"
-import {findMaxOrder, getHeightOfEvent} from "../../helpers/eventsHelper";
+import {findMaxOrder} from "../../helpers/eventsHelper";
 import {DragSource} from "react-dnd";
 import {isCollision} from "./EventPreview";
 import Resizable from "re-resizable";
@@ -51,52 +51,59 @@ const wrapMe = (subCell, collisions, events, cb) => {
 
 class Event extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            delta: 0,
+            incMinutes: 0
+        }
+
+    }
+
     componentDidMount() {
         this.props.connectDragPreview(new Image());
     }
 
-    handleResize = (event) => mouseEvent => {
-        const { offset } = event;
-        const offsetMouse = mouseEvent.pageY;
-        console.error(event.end);
-        if  (offset === undefined) {
-            this.props.resizeEvent(event.id, null, offsetMouse)
-        } else {
-            const difference = offsetMouse - offset;
-            const subCellHeight = config.cellHeight / (60 / config.delimiter);
+    handleResize = (mouseEvent, direction, ref, delta) => {
+        const subCellHeight = config.cellHeight / (60 / config.delimiter);
+        const inc = Math.floor(delta.height / subCellHeight);
+        this.setState({
+            delta: delta.height,
+            incMinutes: inc * config.delimiter
+        })
+    };
 
-            if (Math.abs(difference) > subCellHeight) {
-                const inc = difference > 0 ? config.delimiter : -1 * config.delimiter;
-                event.end = new Date(event.end.valueOf()).setMinutes(new Date(event.end.valueOf()).getMinutes() + inc);
-                const collisions = isCollision(this.props.subCell, event, this.props.events, null);
-
-                if (collisions.length !== 0) {
-                    const trulyOrder = this.props.collisions[event.id].order;
-                    const collisionsBefore = collisions.filter(collision => collision.order < trulyOrder);
-                    const collisionsAfter = collisions.filter(collision => collision.order >= trulyOrder);
-                    wrapMe(this.props.subCell, collisionsAfter, this.props.events, this.props.replaceCollisions);
-                    if (collisionsBefore.length > 0) {
-                        this.props.replaceCollisions(event, collisionsBefore)
-                    }
-                } else if (this.props.collisions[event.id].collisions.length !== 0) {
-                   this.props.clearCollisions(event)
-                }
-                if (event.end.valueOf() > new Date(event.start).valueOf()){
-                    return this.props.resizeEvent(event.id, inc, offsetMouse)
-                }
-
+    handleStopResize = (event) => {
+        this.props.resizeEvent(event.id, this.state.incMinutes);
+        const collisions = isCollision(this.props.subCell, event, this.props.events, null);
+        const order = this.props.collisions[event.id].order;
+        if (collisions.length > 0) {
+            if (order === 1) {
+                wrapMe(this.props.subCell, collisions, this.props.events, this.props.replaceCollisions)
+            } else {
+                this.props.replaceCollisions(event, collisions)
             }
-
+        } else {
+            this.props.clearCollisions(event)
         }
+        this.setState({
+            delta: 0,
+            incMinutes: 0
+        })
     };
 
     render() {
         const { isDragging, connectDragSource, startDrag, collisions, switchDrag, event } = this.props;
+        const {delta, incMinutes} = this.state;
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
 
         // This is solution of drag area problem, but it will provide new problems in production
         const width = (window.innerWidth / 8) / findMaxOrder(event.id, collisions);
+        const startDate = new Date(event.start);
+        const endDate = new Date(event.end);
+        endDate.setMinutes(new Date(event.end).getMinutes() + incMinutes);
 
         return connectDragSource(
             <div style={{
@@ -108,29 +115,32 @@ class Event extends React.Component {
                 background: event.color,
                 borderRadius: 10,
                 width: '100%',
-                height: getHeightOfEvent(event) - 3
+                height: event.height - 3 + delta
             }}>
                 <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
-                           defaultSize={{ width: "100%", height: parseInt(getHeightOfEvent(event)) - 3}}
-                           size={{ width: "100%", height: parseInt(getHeightOfEvent(event)) - 3}}
+                           defaultSize={{width: "100%", height: event.height - 3 + delta}}
+                           size={{width: "100%", height: event.height - 3 + delta}}
                            onResizeStart={switchDrag}
-                           onResize={this.handleResize(event)}
-                           onResizeStop={switchDrag}
+                           onResize={this.handleResize}
+                           onResizeStop={() => {
+                               switchDrag();
+                               this.handleStopResize(event)
+                           }}
                 >
                     <div className="event" style=
                         {{
-                            height: parseInt(getHeightOfEvent(event)) - 15,
+                            height: event.height - 15 + delta,
                             opacity: startDrag ? 0.5 : 1,
                             width: "100%"
                         }}>
-                    <p style={{ fontSize: 10}}>
-                        {event.title} <br/>
-                        Start: {new Date(event.start).getHours()}:{new Date(event.start).getMinutes()} <br/>
-                        End: {new Date(event.end).getHours()}:{new Date(event.end).getMinutes()}
-                    </p>
+                        <p style={{fontSize: 10}}>
+                            {event.title} <br/>
+                            Start: {startDate.getHours()}:{startDate.getMinutes()} <br/>
+                            End: {endDate.getHours()}:{endDate.getMinutes()}
+                        </p>
 
                     </div>
-            </Resizable>
+                </Resizable>
             </div>
         );
     }

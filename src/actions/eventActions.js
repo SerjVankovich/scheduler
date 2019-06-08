@@ -20,7 +20,7 @@ export const clearCollisions = event => ({
     event
 });
 
-export const resizeEvent = (eventId, incrementedMinutes, offset) => ({
+export const resizeEvent = (eventId, incrementedMinutes) => ({
     type: Constants.RESIZE_EVENT,
-    eventId, incrementedMinutes, offset
-})
+    eventId, incrementedMinutes
+});
