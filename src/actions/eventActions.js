@@ -24,3 +24,8 @@ export const resizeEvent = (eventId, incrementedMinutes) => ({
     type: Constants.RESIZE_EVENT,
     eventId, incrementedMinutes
 });
+
+export const rerenderCollisions = (events) => ({
+    type: Constants.RERENDER_COLLISIONS,
+    events
+});

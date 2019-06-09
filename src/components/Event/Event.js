@@ -79,11 +79,7 @@ class Event extends React.Component {
         const collisions = isCollision(this.props.subCell, event, this.props.events, null);
         const order = this.props.collisions[event.id].order;
         if (collisions.length > 0) {
-            if (order === 1) {
-                wrapMe(this.props.subCell, collisions, this.props.events, this.props.replaceCollisions)
-            } else {
-                this.props.replaceCollisions(event, collisions)
-            }
+            this.props.rerenderCollisions(this.props.events)
         } else {
             this.props.clearCollisions(event)
         }

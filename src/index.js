@@ -10,6 +10,8 @@ import config from './config'
 import data from './data'
 import {Provider} from "react-redux";
 import {fillCollisions} from "./helpers/eventsHelper";
+import {replaceCollisions} from "./actions/eventActions";
+import {isCollision} from "./components/Event/EventPreview";
 
 const weekStart = new Date(2018, 3, 30);
 
