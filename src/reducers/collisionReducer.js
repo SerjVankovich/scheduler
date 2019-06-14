@@ -1,5 +1,5 @@
 import Constants from "../actions/constants"
-import {findMaxOrderInCollision, isCollision} from "../helpers/eventsHelper";
+import {fillCollisions, findMaxOrderInCollision, isCollision2} from "../helpers/eventsHelper";
 
 const deleteMe = (me, state) => {
     const myCollisions = state[me.id].collisions;
@@ -44,12 +44,7 @@ const setMyCollisions = (me, collisions, state) => {
 export default function collisions(state={}, action) {
     switch (action.type) {
         case Constants.REMOVE_COLLISIONS:
-            state = deleteMe(action.event, state);
-            state = deleteCollisions(action.event.id, state);
-            state = setNewMe(action.event, action.collisions, state);
-            state = setMyCollisions(action.event, action.collisions, state);
-
-            return {...state};
+            return fillCollisions(action.events)
 
         case Constants.CLEAR_COLLISIONS:
             state = deleteMe(action.event, state);
@@ -57,30 +52,7 @@ export default function collisions(state={}, action) {
 
             return {...state} ;
         case Constants.RERENDER_COLLISIONS:
-            action.events = action.events.map(event => {
-                event.order = 1;
-
-                return event
-            });
-            collisions = {};
-            action.events.forEach(event => {
-                const meCollisions = [];
-
-                action.events.forEach(event2 => {
-                    if (isCollision(event, event2)) {
-                        if (event.order === 1) {
-                            event2.order += meCollisions.length + 1;
-                        }
-                        meCollisions.push(event2)
-                    }
-                });
-
-                collisions[event.id] = {
-                    collisions: meCollisions,
-                    order: event.order
-                }
-            });
-            return collisions;
+            return fillCollisions(action.events);
 
 
         default: return state

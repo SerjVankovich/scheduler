@@ -1,4 +1,5 @@
 import config from "../config";
+import {isCollision} from "../components/Event/EventPreview"
 
 export const isInThisWeek = (date, week) => {
     return date.valueOf() > week[0].valueOf() && date.valueOf() < week[week.length - 1].valueOf()
@@ -27,7 +28,7 @@ export const getHeightOfEvent = (event) => {
 const meInside = (eventStart, evStart, eventEnd, evEnd) => (eventStart > evStart && eventStart < evEnd) || (eventEnd <= evEnd && eventEnd > evStart);
 const meWrap = (eventStart, evStart, eventEnd, evEnd) => (evStart >= eventStart ) && (evEnd <= eventEnd);
 
-export const isCollision = (event1, event2) => {
+export const isCollision2 = (event1, event2) => {
         const event1Start = new Date(event1.start).getHours() + new Date(event1.start).getMinutes() / 60;
         const event1End = new Date(event1.end).getHours() + new Date(event1.end).getMinutes() / 60;
 
@@ -41,26 +42,43 @@ export const isCollision = (event1, event2) => {
 
 };
 
-export const fillCollisions = events => {
+const fillCollisionsWithoutOrder = events => {
     const collisions = {};
     events.forEach(event => {
-        const meCollisions = [];
-
-        events.forEach(event2 => {
-            if (isCollision(event, event2)) {
-                if (event.order === 1) {
-                    event2.order += meCollisions.length + 1;
-                }
-                meCollisions.push(event2)
-            }
-        });
+        const meCollisions = isCollision(null, event, events, null);
 
         collisions[event.id] = {
             collisions: meCollisions,
-            order: event.order
+            order: 0
         }
     });
-     return collisions
+
+    return collisions
+}
+
+export const fillCollisions = events => {
+    const collisions = fillCollisionsWithoutOrder(events);
+
+    events.forEach(event => {
+        let bigCollision = collisions[event.id].collisions;
+        bigCollision.forEach(ev => {
+            const externalCollisions = collisions[ev.id].collisions.filter(col => {
+                return !bigCollision.some(coll => coll.id === col.id)
+            });
+            bigCollision = [...bigCollision, ...externalCollisions]
+        })
+        bigCollision.forEach((collision, id) => {
+            collisions[collision.id].order = id + 1
+            collisions[collision.id].collisions.forEach(col => {
+                collisions[col.id].collisions.forEach(coll => {
+                    if (coll.id === collision.id) {
+                        coll.order = id + 1
+                    }
+                })
+            })
+        })
+    });
+    return collisions
 };
 
 export const findMaxOrder = (eventId, collisions) => {

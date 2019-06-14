@@ -21,17 +21,14 @@ const eventSource = {
 
         const collisions = isCollision(props.lastHoveredSubCell, props.event, props.events, monitor.getItem());
 
-        if (collisions.length !== 0) {
-            props.replaceCollisions(props.event, collisions)
-        } else {
-            props.clearCollisions(props.event)
-        }
+
 
         const {event, address, index, dayStart, delimiter} = props;
         const cellId = monitor.getDropResult().address;
         const subCell = monitor.getDropResult().subCell;
         props.replaceEvent(cellId, event, dayStart, subCell, delimiter);
         props.deleteEvent(address, index, props.subCell.num);
+        props.replaceCollisions(props.event, collisions, props.events)
     }
 };
 

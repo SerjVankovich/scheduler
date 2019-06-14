@@ -50,7 +50,7 @@ export const isCollision = (subCell, event, events, item) => {
             const eventStart = getStart(subCell, item, event).startHours + getStart(subCell, item, event).startMinutes / 60;
             const eventEnd = getEnd(subCell, event, item).endHours + getEnd(subCell, event, item).endMinutes / 60;
 
-            const dayEvent = subCell.address[1] === 6 ? 0 : subCell.address[1] + 1;
+            const dayEvent = subCell ? subCell.address[1] === 6 ? 0 : subCell.address[1] + 1 : new Date(event.start).getDay();
             const dayEv = new Date(ev.start).getDay();
 
             return (meInside(eventStart, evStart, eventEnd, evEnd) || meWrap(eventStart, evStart, eventEnd, evEnd)) && (dayEv === dayEvent) && event.id !== ev.id;

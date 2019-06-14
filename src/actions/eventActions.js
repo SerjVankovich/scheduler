@@ -10,9 +10,9 @@ export const replaceEvent = (cellAddress, event, dayStart, subCell, delimiter) =
     cellAddress, event, dayStart, subCell, delimiter
 });
 
-export const replaceCollisions = (event, collisions) => ({
+export const replaceCollisions = (event, collisions, events) => ({
     type: Constants.REMOVE_COLLISIONS,
-    event, collisions
+    event, collisions, events
 });
 
 export const clearCollisions = event => ({

@@ -11,7 +11,7 @@ const EventConnected = connect(
         canDrag: state.canDrag
     }),
     dispatch => ({
-        replaceCollisions(event, collisions) { return dispatch(replaceCollisions(event, collisions))},
+        replaceCollisions(event, collisions, events) { return dispatch(replaceCollisions(event, collisions, events))},
         clearCollisions(event) { return dispatch(clearCollisions(event))},
         resizeEvent(eventId, incrementedMinutes, offset) { return dispatch(resizeEvent(eventId, incrementedMinutes, offset))},
         rerenderCollisions(events) {return dispatch(rerenderCollisions(events))},
