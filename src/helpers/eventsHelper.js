@@ -49,7 +49,7 @@ const fillCollisionsWithoutOrder = events => {
 
         collisions[event.id] = {
             collisions: meCollisions,
-            order: 0
+            order: 1
         }
     });
 

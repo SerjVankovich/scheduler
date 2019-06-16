@@ -28,6 +28,10 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
         colsNum = findMaxOrder(me.events[0].id, collisions)
     }
 
+    me.events.sort((event1, event2) =>
+        collisions[event1.id].order - collisions[event2.id].order
+    );
+
     const gridStr = item ?
         item.startDragging ?
             `repeat(${ isNotEmpty ? colsNum + 1 : 1}, 1fr)`
