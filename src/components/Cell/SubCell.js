@@ -32,20 +32,29 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
         collisions[event1.id].order - collisions[event2.id].order
     );
 
-    const gridStr = item ?
+    const zindex = item ?
         item.startDragging ?
-            `repeat(${ isNotEmpty ? colsNum + 1 : 1}, 1fr)`
-            : `repeat(${colsNum}, 1fr)`
-        : `repeat(${colsNum}, 1fr)`;
+            2 :
+            0
+        :
+        0;
+    const renderEvents = item ?
+        item.startDragging ?
+            me.events.filter(event => event.id === item.id)
+            :
+            me.events
+        : me.events;
+    const gridStr = `repeat(${colsNum}, 1fr)`;
     return connectDropTarget(
         <div className="subCell" style=
             {{
+                zIndex: zindex,
                 height: 100 / (60 / delimiter) + "%",
                 background: hovered ? "grey" : "white",
                 borderBottomWidth: ((num + 1) === 60 / delimiter) ? 0 : 1,
                 gridTemplateColumns: gridStr
             }}>
-            {me.events.map((event, i) => (
+            {renderEvents.map((event, i) => (
                         <Event collisions={collisions} events={events} startDrag={item ? item.startDragging : false}
                                delimiter={delimiter} dayStart={dayStart} deleteEvent={deleteEvent}
                                replaceEvent={replaceEvent} address={address} subCellNum={num} event={event}

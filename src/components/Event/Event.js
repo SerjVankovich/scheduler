@@ -87,7 +87,7 @@ class Event extends React.Component {
     };
 
     render() {
-        const { isDragging, connectDragSource, startDrag, collisions, switchDrag, event } = this.props;
+        const { isDragging, connectDragSource, startDrag, collisions, switchDrag, event, startDragging } = this.props;
         const {delta, incMinutes} = this.state;
         const myCollisions = collisions[event.id];
         const order = myCollisions.order;
@@ -101,17 +101,16 @@ class Event extends React.Component {
         return connectDragSource(
             <div style={{
                 overflow: 'visible',
-                zIndex: 2,
                 gridColumnStart: order,
                 gridColumnEnd: order + 1,
                 display: isDragging ? "none" : "inline",
                 background: event.color,
                 borderRadius: 10,
-                width: '100%',
+                width: width,
                 height: event.height - 3 + delta
             }}>
                 <Resizable enable={{ top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
-                           defaultSize={{width: "100%", height: event.height - 3 + delta}}
+                           defaultSize={{width: width, height: event.height - 3 + delta}}
                            size={{width: "100%", height: event.height - 3 + delta}}
                            onResizeStart={switchDrag}
                            onResize={this.handleResize}
@@ -124,7 +123,7 @@ class Event extends React.Component {
                         {{
                             height: event.height - 15 + delta,
                             opacity: startDrag ? 0.5 : 1,
-                            width: "100%"
+                            width: width,
                         }}>
                         <p style={{fontSize: 10}}>
                             {event.title} <br/>

@@ -69,7 +69,7 @@ export const EventPreview = ({ event, hoveredSubCell, item, events}) => {
         <div className='event-preview' style={{
                 gridColumnStart: order,
                 gridColumnEnd: order + 1,
-                width: "100%",
+                width: "12.5%",
                 background: event.color,
                 height: parseInt(getHeightOfEvent(event)) - 2,
             }}>
