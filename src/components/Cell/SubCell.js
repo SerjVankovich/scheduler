@@ -40,7 +40,10 @@ const SubCell = ({events, address, delimiter, num, me, dayStart, deleteEvent, re
         0;
     const renderEvents = item ?
         item.startDragging ?
-            me.events.filter(event => event.id === item.id)
+            me.events.filter(event => {
+                const itemCollisions = collisions[item.id].collisions;
+                return itemCollisions.some(collision => event.id === collision.id) || event.id === item.id
+            })
             :
             me.events
         : me.events;
